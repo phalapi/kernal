@@ -1,0 +1,18 @@
+{
+    "name": "phalapi/kernal",
+    "description": "PhalApi 2.0 框架核心部分。",
+    "keywords": ["api", "phalapi", "framework"],
+    "homepage": "http://www.phalapi.net",
+    "license" : "GPL",
+    "authors": [
+        {
+            "name": "Dogstar Huang",
+            "email": "chanzonghuang@gmail.com",
+            "homepage" : "http://my.oschina.net/dogstar",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    }
+}
