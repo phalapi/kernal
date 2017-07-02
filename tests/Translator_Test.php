@@ -4,20 +4,20 @@ namespace PhalApi;
 /**
  * PhpUnderControl_PhalApiTranslator_Test
  *
- * 针对 ../PhalApi/Translator.php Translator 类的PHPUnit单元测试
+ * 针对 \PhalApi\Translator 类的PHPUnit单元测试
  *
  * @author: dogstar 20150201
  */
 
 class PhpUnderControl_PhalApiTranslator_Test extends \PHPUnit_Framework_TestCase
 {
-    public $coreTranslator;
+    public $translator;
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->coreTranslator = new Translator();
+        $this->translator = new Translator();
     }
 
     protected function tearDown()

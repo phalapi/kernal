@@ -30,7 +30,7 @@ SL('zh_cn');
 
 DI()->loader = $loader;
 
-DI()->config = new FileConfig(dirname(__FILE__) . '/Config');
+DI()->config = new FileConfig(dirname(__FILE__) . '/config');
 
 DI()->logger = new ExplorerLogger(
 		Logger::LOG_LEVEL_DEBUG | Logger::LOG_LEVEL_INFO | Logger::LOG_LEVEL_ERROR);
@@ -123,7 +123,7 @@ class JsonpResponseMock extends JsonpResponse {
     }
 }
 
-class ApiImpl extends Api {
+class ImplApi extends Api {
 
     public function getRules() {
         return array(

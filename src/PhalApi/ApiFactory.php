@@ -44,13 +44,17 @@ class ApiFactory {
         $api        = DI()->request->getServiceApi();
         $action     = DI()->request->getServiceAction();
 
-        if (empty($namespace) || empty($api) || empty($action)) {
+        if (empty($api) || empty($action)) {
             throw new BadRequestException(
                 T('service ({service}) illegal', array('service' => $service))
             );
         }
 
-        $apiClass = '\\' . $namespace . '\\Api\\' . ucfirst($api);
+        // 兼容 1.x 版本的Class.Action请求格式； 2.x 版本格式为Namespace.Class.Action
+        $apiClass = !empty($namespace) 
+            ? '\\' . $namespace . '\\Api\\' . ucfirst($api)
+            : 'Api_' . ucfirst($api);
+
         if (!class_exists($apiClass)) {
             throw new BadRequestException(
                 T('no such service as {service}', array('service' => $service)), 4
