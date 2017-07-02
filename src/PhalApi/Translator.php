@@ -85,7 +85,6 @@ class Translator {
      */
     public static function addMessage($path) {
         $moreMessagePath = static::getMessageFilePath($path, static::$language);
-        var_dump($moreMessagePath);
 
         if (file_exists($moreMessagePath)) {
             static::$message = array_merge(static::$message, include $moreMessagePath);
