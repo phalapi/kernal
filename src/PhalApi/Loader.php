@@ -82,10 +82,6 @@ class Loader {
             return;
         }
 
-        if ($this->loadClass(PHALAPI_ROOT, $className)) {
-            return;
-        }
-
         foreach ($this->dirs as $dir) {
             if ($this->loadClass($this->basePath . DIRECTORY_SEPARATOR . $dir, $className)) {
                 return;

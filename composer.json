@@ -27,11 +27,11 @@
   },
   "autoload": {
     "files": [
-      "src/PhalApi/functions.php"
+      "src/phalapi/functions.php"
     ],
     "psr-4": {
-      "PhalApi\\": "src/PhalApi",
-      "NotORM\\": "src/NotORM"
+      "PhalApi\\": "src/phalapi",
+      "NotORM\\": "src/notorm"
     }
   }
 }

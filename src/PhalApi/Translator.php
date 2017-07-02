@@ -67,7 +67,8 @@ class Translator {
 
         static::$message = array();
 
-        static::addMessage(PHALAPI_ROOT);
+        $kernalLanguageFolder = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..';
+        static::addMessage($kernalLanguageFolder);
 
         if (defined('API_ROOT')) {
             static::addMessage(API_ROOT);
@@ -84,6 +85,7 @@ class Translator {
      */
     public static function addMessage($path) {
         $moreMessagePath = static::getMessageFilePath($path, static::$language);
+        var_dump($moreMessagePath);
 
         if (file_exists($moreMessagePath)) {
             static::$message = array_merge(static::$message, include $moreMessagePath);
@@ -91,7 +93,6 @@ class Translator {
     }
 
     protected static function getMessageFilePath($root, $language) {
-        // TODO
         return implode(DIRECTORY_SEPARATOR, 
             array($root, 'language', strtolower($language), 'common.php'));
     }

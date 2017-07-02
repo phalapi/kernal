@@ -14,7 +14,7 @@ use PhalApi\Logger;
  * @author      dogstar <chanzonghuang@gmail.com> 2015-02-09 
  */
 
-class ExploerLogger extends PhalApi_Logger {
+class ExplorerLogger extends Logger {
 
 	public function log($type, $msg, $data) {
         $msgArr = array();
