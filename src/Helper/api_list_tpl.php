@@ -6,7 +6,7 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title><?php echo $apiDirName; ?> - 在线接口列表 - <?php echo $projectName; ?></title>
+    <title><?php echo $projectName; ?> - 在线接口列表</title>
     <link href="https://cdn.bootcss.com/semantic-ui/2.2.2/semantic.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/semantic-ui/2.2.2/semantic.min.js"></script>
@@ -100,9 +100,10 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
                                 if ($env){
                                     ob_start ();
                                     $_REQUEST['service'] = $mItem['service'];
-                                    include($webRoot . D_S . 'checkApiParams.php');
+                                    $_GET['detail'] = 1;
+                                    include($webRoot . D_S . 'docs.php');
                                     $string = ob_get_clean ();
-                                    saveHtml ($webRoot, $mItem['service'], $string);
+                                    \PhalApi\Helper\saveHtml ($webRoot, $mItem['service'], $string);
                                     $link = $mItem['service'] . '.html';
                                 }else{
                                     $concator = strpos($uri, '?') ? '&' : '?';
@@ -188,7 +189,7 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
 <?php
 if ($env){
     $string = ob_get_clean ();
-    saveHtml ($webRoot, 'index', $string);
+    \PhalApi\Helper\saveHtml ($webRoot, 'index', $string);
     $str = "
 Usage:
 
@@ -199,7 +200,7 @@ Usage:
     if (strtoupper ( substr ( PHP_OS, 0,3)) == 'WIN'){
         $str = iconv ( 'utf-8', 'gbk', $str);
     }
-    $str .= $webRoot . D_S . 'doc' ;
+    $str .= $webRoot . D_S . 'docs' ;
     echo $str, PHP_EOL, PHP_EOL;
     exit(0);
 }
