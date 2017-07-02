@@ -50,10 +50,7 @@ class ApiFactory {
             );
         }
 
-        // 兼容 1.x 版本的Class.Action请求格式； 2.x 版本格式为Namespace.Class.Action
-        $apiClass = !empty($namespace) 
-            ? '\\' . $namespace . '\\Api\\' . ucfirst($api)
-            : 'Api_' . ucfirst($api);
+        $apiClass = '\\' . $namespace . '\\Api\\' . str_replace('_', '\\', ucfirst($api));
 
         if (!class_exists($apiClass)) {
             throw new BadRequestException(
