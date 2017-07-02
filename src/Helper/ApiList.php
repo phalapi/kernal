@@ -7,7 +7,7 @@ defined('D_S') || define('D_S', DIRECTORY_SEPARATOR);
 
 class ApiList extends ApiOnline {
 
-    public function render($apiDirName, $libraryPaths) {
+    public function render() {
         $composerJson = file_get_contents(API_ROOT . D_S . 'composer.json');
         $composerArr = json_decode($composerJson, TRUE);
 
