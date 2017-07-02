@@ -43,7 +43,7 @@ class SimpleMD5Filter implements Filter {
 
         if ($expectSign != $sign) {
             \PhalApi\DI()->logger->debug('Wrong Sign', array('needSign' => $expectSign));
-            throw new BadRequestException(T('wrong sign'), 6);
+            throw new BadRequestException(\PhalApi\T('wrong sign'), 6);
         }
     }
 

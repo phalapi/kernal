@@ -67,11 +67,11 @@ class FileFormatter extends BaseFormatter implements Formatter {
         $index = $rule['name'];
 
         if (!isset($file) || !isset($file['error']) || !is_array($file)) {
-            throw new BadRequestException(T('miss upload file: {file}', array('file' => $index)));
+            throw new BadRequestException(\PhalApi\T('miss upload file: {file}', array('file' => $index)));
         }
 
         if ($file['error'] != UPLOAD_ERR_OK) {
-            throw new BadRequestException(T('fail to upload file with error = {error}', array('error' => $file['error'])));
+            throw new BadRequestException(\PhalApi\T('fail to upload file with error = {error}', array('error' => $file['error'])));
         }
 
         $sizeRule         = $rule;
@@ -90,13 +90,13 @@ class FileFormatter extends BaseFormatter implements Formatter {
                 $rule['ext'] = explode(',', $rule['ext']);
             }
             if (!$ext) {
-                throw new BadRequestException(T('Not the file type {ext}', array('ext' => json_encode($rule['ext']))));
+                throw new BadRequestException(\PhalApi\T('Not the file type {ext}', array('ext' => json_encode($rule['ext']))));
             }
             if (is_array($rule['ext'])) {
                 $rule['ext'] = array_map('strtolower', $rule['ext']);
                 $rule['ext'] = array_map('trim', $rule['ext']);
                 if (!in_array(strtolower($ext), $rule['ext'])) {
-                    throw new BadRequestException(T('Not the file type {ext}', array('ext' => json_encode($rule['ext']))));
+                    throw new BadRequestException(\PhalApi\T('Not the file type {ext}', array('ext' => json_encode($rule['ext']))));
                 }
             }
         }
