@@ -12,7 +12,7 @@ use PhalApi\Logger;
 ```
  *      //目录为./Runtime，且保存全部类型的日记
  *      $logger = new FileLogger('./Runtime',
- * 	        PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);
+ * 	        Logger::LOG_LEVEL_DEBUG | Logger::LOG_LEVEL_INFO | Logger::LOG_LEVEL_ERROR);
  *
  *      //日记会保存在在./Runtime/debug_log/目录下
  *      $logger->debug('this is bebug test');

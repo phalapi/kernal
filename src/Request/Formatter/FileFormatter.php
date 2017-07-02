@@ -3,6 +3,7 @@ namespace PhalApi\Request\Formatter;
 
 use PhalApi\Request\Formatter;
 use PhalApi\Request\Formatter\BaseFormatter;
+use PhalApi\Exception\BadRequestException;
 
 /**
  * FileFormatter 格式化上传文件
@@ -18,7 +19,7 @@ class FileFormatter extends BaseFormatter implements Formatter {
      *
      * @param array $rule array('name' => '', 'type' => 'file', 'default' => array(...), 'min' => '', 'max' => '', 'range' => array(...))
      *
-     * @throws PhalApi_Exception_BadRequest
+     * @throws BadRequestException
      */
     public function parse($value, $rule) {
 
@@ -66,11 +67,11 @@ class FileFormatter extends BaseFormatter implements Formatter {
         $index = $rule['name'];
 
         if (!isset($file) || !isset($file['error']) || !is_array($file)) {
-            throw new PhalApi_Exception_BadRequest(T('miss upload file: {file}', array('file' => $index)));
+            throw new BadRequestException(T('miss upload file: {file}', array('file' => $index)));
         }
 
         if ($file['error'] != UPLOAD_ERR_OK) {
-            throw new PhalApi_Exception_BadRequest(T('fail to upload file with error = {error}', array('error' => $file['error'])));
+            throw new BadRequestException(T('fail to upload file with error = {error}', array('error' => $file['error'])));
         }
 
         $sizeRule         = $rule;
@@ -89,13 +90,13 @@ class FileFormatter extends BaseFormatter implements Formatter {
                 $rule['ext'] = explode(',', $rule['ext']);
             }
             if (!$ext) {
-                throw new PhalApi_Exception_BadRequest(T('Not the file type {ext}', array('ext' => json_encode($rule['ext']))));
+                throw new BadRequestException(T('Not the file type {ext}', array('ext' => json_encode($rule['ext']))));
             }
             if (is_array($rule['ext'])) {
                 $rule['ext'] = array_map('strtolower', $rule['ext']);
                 $rule['ext'] = array_map('trim', $rule['ext']);
                 if (!in_array(strtolower($ext), $rule['ext'])) {
-                    throw new PhalApi_Exception_BadRequest(T('Not the file type {ext}', array('ext' => json_encode($rule['ext']))));
+                    throw new BadRequestException(T('Not the file type {ext}', array('ext' => json_encode($rule['ext']))));
                 }
             }
         }

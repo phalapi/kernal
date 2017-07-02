@@ -2,7 +2,7 @@
 namespace PhalApi;
 
 /**
- * PhalApi_Config 配置接口
+ * Config 配置接口
  *
  * 获取系统所需要的参数配置
  * 

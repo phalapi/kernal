@@ -20,7 +20,7 @@ use PhalApi\Config;
 ```
  *
  * @package     PhalApi\Config
- * @see         PhalApi_Config::get()
+ * @see         \PhalApi\Config::get()
  * @license     http://www.phalapi.net/license GPL 协议
  * @link        http://www.phalapi.net/
  * @link        https://github.com/laruence/yaconf

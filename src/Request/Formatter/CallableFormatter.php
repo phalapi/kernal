@@ -3,6 +3,7 @@ namespace PhalApi\Request\Formatter;
 
 use PhalApi\Request\Formatter;
 use PhalApi\Request\Formatter\BaseFormatter;
+use PhalApi\Exception\InternalServerErrorException;
 
 /**
  * CallableFormatter 格式化回调类型
@@ -39,8 +40,8 @@ class CallableFormatter extends BaseFormatter implements Formatter {
         }
 
         if (empty($callback) || !is_callable($callback)) {
-            throw new PhalApi_Exception_InternalServerError(
-                T('invalid callback for rule: {name}', array('name' => $rule['name']))
+            throw new InternalServerErrorException(
+                \PhalApi\T('invalid callback for rule: {name}', array('name' => $rule['name']))
             );
         }
 

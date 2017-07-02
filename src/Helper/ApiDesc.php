@@ -43,7 +43,7 @@ class ApiDesc extends ApiOnline {
         $rClass = new \ReflectionClass($className);
         $classDocComment = $rClass->getDocComment();
         while ($parent = $rClass->getParentClass()) {
-            if ($parent->getName() == 'PhalApi_Api') {
+            if ($parent->getName() == '\\PhalApi\\Api') {
                 break;
             }
             $classDocComment = $parent->getDocComment() . "\n" . $classDocComment;

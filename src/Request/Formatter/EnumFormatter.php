@@ -3,6 +3,7 @@ namespace PhalApi\Request\Formatter;
 
 use PhalApi\Request\Formatter;
 use PhalApi\Request\Formatter\BaseFormatter;
+use PhalApi\Exception\InternalServerErrorException;
 
 /**
  * EnumFormatter 格式化枚举类型
@@ -32,17 +33,17 @@ class EnumFormatter extends BaseFormatter implements Formatter {
     /**
      * 检测枚举规则的合法性
      * @param array $rule array('name' => '', 'type' => 'enum', 'default' => '', 'range' => array(...))
-     * @throws PhalApi_Exception_InternalServerError
+     * @throws InternalServerErrorException
      */
     protected function formatEnumRule($rule) {
         if (!isset($rule['range'])) {
-            throw new PhalApi_Exception_InternalServerError(
-                T("miss {name}'s enum range", array('name' => $rule['name'])));
+            throw new InternalServerErrorException(
+                \PhalApi\T("miss {name}'s enum range", array('name' => $rule['name'])));
         }
 
         if (empty($rule['range']) || !is_array($rule['range'])) {
-            throw new PhalApi_Exception_InternalServerError(
-                T("{name}'s enum range can not be empty", array('name' => $rule['name'])));
+            throw new InternalServerErrorException(
+                \PhalApi\T("{name}'s enum range can not be empty", array('name' => $rule['name'])));
         }
     }
 }

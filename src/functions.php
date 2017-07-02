@@ -15,7 +15,7 @@ use PhalApi\Translator;
 /**
  * 获取DI
  * 相当于DependenceInjection::one()
- * @return PhalApi_DI
+ * @return \PhalApi\DependenceInjection
  */
 function DI() {
     return DependenceInjection::one();

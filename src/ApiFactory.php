@@ -33,10 +33,10 @@ class ApiFactory {
      *
      * @param boolen $isInitialize 是否在创建后进行初始化
      * @param string $_REQUEST['service'] 接口服务名称，格式：XXX.XXX
-     * @return PhalApi_Api 自定义的控制器
+     * @return \PhalApi\Api 自定义的控制器
      *
-     * @uses PhalApi_Api::init()
-     * @throws PhalApi_Exception_BadRequest 非法请求下返回400
+     * @uses \PhalApi\Api::init()
+     * @throws BadRequestException 非法请求下返回400
      */
     static function generateService($isInitialize = TRUE) {
         $service    = DI()->request->getService();
@@ -62,7 +62,7 @@ class ApiFactory {
 
         if (!is_subclass_of($api, '\\PhalApi\\Api')) {
             throw new InternalServerErrorException(
-                T('{class} should be subclass of PhalApi_Api', array('class' => $apiClass))
+                T('{class} should be subclass of \\PhalApi\\Api', array('class' => $apiClass))
             );
         }
 

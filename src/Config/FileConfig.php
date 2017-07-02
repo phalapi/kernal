@@ -4,7 +4,7 @@ namespace PhalApi\Config;
 use PhalApi\Config;
 
 /**
- * PhalApi_Config_File 文件配置类
+ * FileConfig 文件配置类
  *
  * <li>从配置文件获取参数配置</li>
  * 
@@ -16,7 +16,7 @@ use PhalApi\Config;
  * </code>
  *
  * @package     PhalApi\Config
- * @see         PhalApi_Config::get()
+ * @see         \PhalApi\Config::get()
  * @license     http://www.phalapi.net/license GPL 协议
  * @link        http://www.phalapi.net/
  * @author      dogstar <chanzonghuang@gmail.com> 2014-10-02

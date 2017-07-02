@@ -3,6 +3,7 @@ namespace PhalApi\Request\Formatter;
 
 use PhalApi\Request\Formatter;
 use PhalApi\Request\Formatter\BaseFormatter;
+use PhalApi\Exception\BadRequestException;
 
 /**
  * StringFormatter  格式化字符串
@@ -53,7 +54,7 @@ class StringFormatter extends BaseFormatter implements Formatter {
 
         //如果你看到此行报错，说明提供的正则表达式不合法
         if (preg_match($rule['regex'], $value) <= 0) {
-            throw new PhalApi_Exception_BadRequest(T('{name} can not match {regex}', array('name'  => $rule['name'],
+            throw new BadRequestException(\PhalApi\T('{name} can not match {regex}', array('name'  => $rule['name'],
                                                                                            'regex' => $rule['regex']
                 )));
         }
