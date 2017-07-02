@@ -26,20 +26,21 @@ class ApiList extends ApiOnline {
             }
 
             $files = listDir(API_ROOT . D_S . $srcPath . D_S . 'Api');
+            $filePrefix = rtrim($srcPath, D_S) . D_S .'Api' . D_S;
 
             foreach ($files as $aFile) {
-                $subValue = strrchr($aFile, $srcPath);
-                $apiServer = str_replace(array($srcPath, '.php'), array('', ''), $subValue);
-                $apiServerShortName = str_replace(array(D_S . 'Api' . D_S, D_S), array('', '_'), $apiServer) ;
-                $apiServer = '\\' . $namespace . str_replace(D_S, '\\', trim($apiServer, D_S));
+                $subValue = strstr($aFile, $filePrefix);
+                $apiClassPath = str_replace(array($filePrefix, '.php'), array('', ''), $subValue);
+                $apiClassShortName = str_replace(D_S, '_', $apiClassPath) ;
+                $apiClassName = '\\' . $namespace . 'Api\\' . str_replace('_', '\\', $apiClassShortName);
 
-                if (!class_exists($apiServer)) {
+                if (!class_exists($apiClassName)) {
                     continue;
                 }
 
                 //  左菜单的标题
-                $ref        = new \ReflectionClass($apiServer);
-                $title      = "//请检测接口服务注释($apiServer)";
+                $ref        = new \ReflectionClass($apiClassName);
+                $title      = "//请检测接口服务注释($apiClassName)";
                 $desc       = '//请使用@desc 注释';
                 $docComment = $ref->getDocComment();
                 if ($docComment !== false) {
@@ -53,13 +54,13 @@ class ApiList extends ApiOnline {
                         }
                     }
                 }
-                $allApiS[$apiServerShortName]['title'] = $title;
-                $allApiS[$apiServerShortName]['desc']  = $desc;
+                $allApiS[$apiClassShortName]['title'] = $title;
+                $allApiS[$apiClassShortName]['desc']  = $desc;
 
-                $method = array_diff(get_class_methods($apiServer), $allPhalApiApiMethods);
+                $method = array_diff(get_class_methods($apiClassName), $allPhalApiApiMethods);
                 sort($method);
                 foreach ($method as $mValue) {
-                    $rMethod = new \Reflectionmethod($apiServer, $mValue);
+                    $rMethod = new \Reflectionmethod($apiClassName, $mValue);
                     if (!$rMethod->isPublic() || strpos($mValue, '__') === 0) {
                         continue;
                     }
@@ -79,8 +80,8 @@ class ApiList extends ApiOnline {
                             }
                         }
                     }
-                    $service                                           = trim($namespace, '\\') . '.' . $apiServerShortName . '.' . ucfirst($mValue);
-                    $allApiS[$apiServerShortName]['methods'][$service] = array(
+                    $service                                           = trim($namespace, '\\') . '.' . $apiClassShortName . '.' . ucfirst($mValue);
+                    $allApiS[$apiClassShortName]['methods'][$service] = array(
                         'service' => $service,
                         'title'   => $title,
                         'desc'    => $desc,
@@ -132,7 +133,7 @@ function listDir($dir) {
 }
 
 function saveHtml($webRoot, $name, $string){
-    $dir = $webRoot . D_S . 'doc';
+    $dir = $webRoot . D_S . 'docs';
     if (!is_dir ( $dir)){
         mkdir ( $dir);
     }
