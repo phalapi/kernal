@@ -5,6 +5,11 @@ use PhalApi\DependenceInjection;
 use PhalApi\Translator;
 
 /**
+ * 框架版本号
+ */
+defined('PHALAPI_VERSION') || define('PHALAPI_VERSION', '1.4.1');
+
+/**
  * 考虑再三，出于人性化关怀，提供要些快速的函数和方法
  *
  * @license     http://www.phalapi.net/license GPL 协议

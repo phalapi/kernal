@@ -5,11 +5,6 @@ use PhalApi\ApiFactory;
 use PhalApi\Exception;
 
 /**
- * 框架版本号
- */
-defined('PHALAPI_VERSION') || define('PHALAPI_VERSION', '1.4.1');
-
-/**
  * PhalApi 应用类
  *
  * - 实现远程服务的响应、调用等操作
