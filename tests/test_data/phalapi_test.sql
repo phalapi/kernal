@@ -80,10 +80,11 @@ INSERT INTO `tbl_demo_3` VALUES ('1', '1');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_user`;
 CREATE TABLE `tbl_user` (
-      `id` int(11) NOT NULL,
+      `id` int(11) NOT NULL AUTO_INCREMENT,
       `name` varchar(45) DEFAULT NULL,
       `note` varchar(45) DEFAULT NULL,
       `create_date` datetime DEFAULT NULL,
+      `age` tinyint(4) DEFAULT NULL,
       PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

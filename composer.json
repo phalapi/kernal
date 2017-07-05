@@ -20,7 +20,8 @@
     }
   ],
   "require": {
-    "php": ">=5.3.3"
+    "php": ">=5.3.3",
+    "phalapi/notorm": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "4.8.*"

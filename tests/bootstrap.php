@@ -35,6 +35,8 @@ DI()->config = new FileConfig(dirname(__FILE__) . '/config');
 DI()->logger = new ExplorerLogger(
 		Logger::LOG_LEVEL_DEBUG | Logger::LOG_LEVEL_INFO | Logger::LOG_LEVEL_ERROR);
 
+DI()->debug = true;
+
 //DI()->notorm = function() {
 //    $notorm = new PhalApi_DB_NotORM(DI()->config->get('dbs'), true);
 //    return $notorm;
