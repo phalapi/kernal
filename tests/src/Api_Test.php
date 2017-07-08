@@ -1,6 +1,9 @@
 <?php
-namespace PhalApi;
+namespace PhalApi\Tests;
 
+use PhalApi\Api;
+use PhalApi\Request;
+use PhalApi\Filter;
 use PhalApi\Exception\InternalServerErrorException;
 
 /**
@@ -24,7 +27,7 @@ class PhpUnderControl_PhalApiApi_Test extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        DI()->filter = NULL;
+        \PhalApi\DI()->filter = NULL;
     }
 
     /**
@@ -32,7 +35,7 @@ class PhpUnderControl_PhalApiApi_Test extends \PHPUnit_Framework_TestCase
      */ 
     public function testInitialize()
     {
-        DI()->request = new Request(array('service' => 'Default.Index'));
+        \PhalApi\DI()->request = new Request(array('service' => 'Default.Index'));
         $rs = $this->api->init();
     }
 
@@ -42,7 +45,7 @@ class PhpUnderControl_PhalApiApi_Test extends \PHPUnit_Framework_TestCase
         $data = array();
         $data['service'] = 'Default.Index';
 
-        DI()->request = new Request($data);
+        \PhalApi\DI()->request = new Request($data);
         $rs = $this->api->init();
     }
 
@@ -51,7 +54,7 @@ class PhpUnderControl_PhalApiApi_Test extends \PHPUnit_Framework_TestCase
         $data = array();
         $data['service'] = 'Default.Index';
 
-        DI()->request = new Request($data);
+        \PhalApi\DI()->request = new Request($data);
         $rs = $this->api->init();
 
     }
@@ -79,8 +82,8 @@ class PhpUnderControl_PhalApiApi_Test extends \PHPUnit_Framework_TestCase
         $data['left'] = '6';
         $data['right'] = '1';
 
-        DI()->request = new Request($data);
-        DI()->filter = '\PhalApi\ImplFilter';
+        \PhalApi\DI()->request = new Request($data);
+        \PhalApi\DI()->filter = '\\PhalApi\\Tests\\ImplFilter';
 
         $impl = new ImplApi();
         $impl->init();
@@ -94,7 +97,7 @@ class PhpUnderControl_PhalApiApi_Test extends \PHPUnit_Framework_TestCase
      */
     public function testIllegalFilter()
     {
-        DI()->filter = 'ImplNotFoundFilter';
+        \PhalApi\DI()->filter = '\\PhalApi\\ImplNotFoundFilter';
 
         $impl = new ImplApi();
         $impl->init();

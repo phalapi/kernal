@@ -1,5 +1,7 @@
 <?php
-namespace PhalApi\Model;
+namespace PhalApi\Tests;
+
+use PhalApi\Model\Query;
 
 /**
  * PhpUnderControl_PhalApiModelQuery_Test

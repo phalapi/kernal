@@ -1,7 +1,7 @@
 <?php
 namespace Fun\Model;
 
-use PhalApi\Model\NotORMTest;
+use PhalApi\Tests\NotORMTest;
 
 class DefaultTbl extends NotORMTest {
 }

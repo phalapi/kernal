@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use PhalApi\Model\NotORMTest;
+use PhalApi\Tests\NotORMTest;
 
 class Tmp extends NotORMTest {
 

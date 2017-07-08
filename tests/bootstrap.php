@@ -1,10 +1,13 @@
 <?php
-namespace PhalApi;
+namespace PhalApi\Tests;
 
 use PhalApi\Loader;
 use PhalApi\Config\FileConfig;
 use PhalApi\Logger\ExplorerLogger;
 use PhalApi\Filter;
+use PhalApi\Logger;
+use PhalApi\Api;
+use PhalApi\Crypt;
 use PhalApi\Exception\BadRequestException;
 use PhalApi\Response\JsonResponse;
 use PhalApi\Response\JsonpResponse;
@@ -23,28 +26,30 @@ require API_ROOT . '/../vendor/autoload.php';
 
 $loader = new Loader(API_ROOT);
 
+$di = \PhalApi\DI();
+
 date_default_timezone_set('Asia/Shanghai');
 
-SL('zh_cn');
+\PhalApi\SL('zh_cn');
 
 /** ---------------- 注册&初始化服务组件 ---------------- **/
 
-DI()->loader = $loader;
+$di->loader = $loader;
 
-DI()->config = new FileConfig(dirname(__FILE__) . '/config');
+$di->config = new FileConfig(dirname(__FILE__) . '/config');
 
-DI()->logger = new ExplorerLogger(
+$di->logger = new ExplorerLogger(
 		Logger::LOG_LEVEL_DEBUG | Logger::LOG_LEVEL_INFO | Logger::LOG_LEVEL_ERROR);
 
-DI()->debug = true;
+$di->debug = true;
 
-DI()->notorm = function() {
+$di->notorm = function() {
     $notorm = new NotORMDatabase(\PhalApi\DI()->config->get('dbs'), true);
     return $notorm;
 };
 
-DI()->cache = function() {
-    //$mc = new PhalApi_Cache_Memcached(DI()->config->get('sys.mc'));
+$di->cache = function() {
+    //$mc = new PhalApi_Cache_Memcached(\PhalApi\DI()->config->get('sys.mc'));
     $mc = new MemcachedMock();
 	return $mc;
 };
@@ -92,9 +97,9 @@ if (!class_exists('Redis')) {
 }
 
 //加密，测试情况下为防止本地环境没有mcrypt模块 这里作了替身
-DI()->crypt = function() {
+$di->crypt = function() {
 	//return new MockCrypt();
-	// TODO return new PhalApi_Crypt_MultiMcrypt(DI()->config->get('sys.crypt.mcrypt_iv'));
+	// TODO return new PhalApi_Crypt_MultiMcrypt(\PhalApi\DI()->config->get('sys.crypt.mcrypt_iv'));
 };
 
 class MockCrypt implements Crypt

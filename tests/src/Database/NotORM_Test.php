@@ -1,4 +1,10 @@
 <?php
+namespace PhalApi\Tests;
+
+use PhalApi\Database\NotORMDatabase;
+use PhalApi\Exception\Exception;
+use PhalApi\Exception\InternalServerErrorException;
+
 /**
  * PhpUnderControl_PhalApiDBNotORM_Test
  *
@@ -6,12 +12,6 @@
  *
  * @author: dogstar 20141122
  */
-
-namespace PhalApi\Database;
-
-use PhalApi\Database\NotORMDatabase;
-use PhalApi\Exception\Exception;
-use PhalApi\Exception\InternalServerErrorException;
 
 class PhpUnderControl_PhalApiDBNotORM_Test extends \PHPUnit_Framework_TestCase
 {

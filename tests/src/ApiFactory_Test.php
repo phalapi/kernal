@@ -1,10 +1,10 @@
 <?php
-namespace PhalApi;
+namespace PhalApi\Tests;
 
 use PhalApi\ApiFactory;
 use PhalApi\Exception\BadRequestException;
 use PhalApi\Exception\InternalServerErrorException;
-use PhalApi\ImplExceptionFilter;
+use PhalApi\Request;
 
 include_once dirname(__FILE__) . '/app.php';
 
@@ -27,7 +27,7 @@ class PhpUnderControl_PhalApiApiFactory_Test extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        DI()->filter = NULL;
+        \PhalApi\DI()->filter = NULL;
     }
 
 
@@ -47,7 +47,7 @@ class PhpUnderControl_PhalApiApiFactory_Test extends \PHPUnit_Framework_TestCase
         $data['service'] = 'Site.Index';
         $data['sign'] = '1ec92737c7c287c7249e0adef566544a';
 
-        DI()->request = new Request($data);
+        \PhalApi\DI()->request = new Request($data);
         $rs = ApiFactory::generateService();
 
         $this->assertNotNull($rs);
@@ -61,7 +61,7 @@ class PhpUnderControl_PhalApiApiFactory_Test extends \PHPUnit_Framework_TestCase
     public function testGenerateIllegalApiService()
     {
         $data['service'] = 'NoThisService.Index';
-        DI()->request = new Request($data);
+        \PhalApi\DI()->request = new Request($data);
         $rs = ApiFactory::generateService();
     }
 
@@ -71,7 +71,7 @@ class PhpUnderControl_PhalApiApiFactory_Test extends \PHPUnit_Framework_TestCase
     public function testGenerateIllegalActionService()
     {
         $data['service'] = 'Default.noThisFunction';
-        DI()->request = new Request($data);
+        \PhalApi\DI()->request = new Request($data);
         $rs = ApiFactory::generateService();
     }
 
@@ -81,7 +81,7 @@ class PhpUnderControl_PhalApiApiFactory_Test extends \PHPUnit_Framework_TestCase
     public function testIllegalServiceName()
     {
         $data['service'] = 'Default';
-        DI()->request = new Request($data);
+        \PhalApi\DI()->request = new Request($data);
         $rs = ApiFactory::generateService();
     }
 
@@ -91,7 +91,7 @@ class PhpUnderControl_PhalApiApiFactory_Test extends \PHPUnit_Framework_TestCase
     public function testNotPhalApiSubclass()
     {
         $data['service'] = 'Crazy.What';
-        DI()->request = new Request($data);
+        \PhalApi\DI()->request = new Request($data);
         $rs = ApiFactory::generateService();
     }
 
@@ -100,10 +100,10 @@ class PhpUnderControl_PhalApiApiFactory_Test extends \PHPUnit_Framework_TestCase
      */
     public function testServiceWhitelistNOTInclude()
     {
-        DI()->filter = new ImplExceptionFilter();
+        \PhalApi\DI()->filter = new ImplExceptionFilter();
 
         $data['service'] = 'ServiceWhitelist.GetTime';
-        DI()->request = new Request($data);
+        \PhalApi\DI()->request = new Request($data);
         $rs = ApiFactory::generateService();
     }
 
@@ -112,10 +112,10 @@ class PhpUnderControl_PhalApiApiFactory_Test extends \PHPUnit_Framework_TestCase
      */
     public function testServiceWhitelistInclude($service)
     {
-        DI()->filter = new ImplExceptionFilter();
+        \PhalApi\DI()->filter = new ImplExceptionFilter();
 
         $data['service'] = $service;
-        DI()->request = new Request($data);
+        \PhalApi\DI()->request = new Request($data);
         $rs = ApiFactory::generateService();
 
         $this->assertInstanceOf('\\PhalApi\\Api', $rs);

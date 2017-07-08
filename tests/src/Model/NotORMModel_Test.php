@@ -1,4 +1,8 @@
 <?php
+namespace PhalApi\Tests;
+
+use PhalApi\Model\NotORMModel;
+
 /**
  * PhpUnderControl_PhalApiModelNotORM_Test
  *
@@ -7,15 +11,21 @@
  * @author: dogstar 20150226
  */
 
-namespace PhalApi\Model;
-
-use PhalApi\Model\NotORMORM;
-
 class NotORMTest extends NotORMModel {
     public function getTableName($id) {
         return parent::getTableName($id);
     }
 }
+
+class NotORMTestModel extends NotORMModel {
+    public function getTableName($id) {
+        return 'notormtest';
+    }
+}
+
+include_once dirname(__FILE__) . '/app.php';
+include_once dirname(__FILE__) . '/app_fun.php';
+include_once dirname(__FILE__) . '/fun.php';
 
 class PhpUnderControl_PhalApiModelNotORM_Test extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +34,7 @@ class PhpUnderControl_PhalApiModelNotORM_Test extends \PHPUnit_Framework_TestCas
     protected function setUp()
     {
         parent::setUp();
-        $this->phalApiModelNotORM = new NotORMTest();
+        $this->phalApiModelNotORM = new NotORMTestModel();
     }
 
     protected function tearDown()
@@ -95,10 +105,6 @@ class PhpUnderControl_PhalApiModelNotORM_Test extends \PHPUnit_Framework_TestCas
      */
     public function testDefaultTable($tableName, $tableClass)
     {
-        include_once dirname(__FILE__) . '/app.php';
-        include_once dirname(__FILE__) . '/app_fun.php';
-        include_once dirname(__FILE__) . '/fun.php';
-
         $model = new $tableClass();
         $this->assertEquals($tableName, $model->getTableName(null));
     }

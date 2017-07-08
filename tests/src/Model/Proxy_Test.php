@@ -1,5 +1,8 @@
 <?php
-namespace PhalApi\Model;
+namespace PhalApi\Tests;
+
+use PhalApi\Model\Query;
+use PhalApi\Model\Proxy;
 
 /**
  * PhpUnderControl_PhalApiModelProxy_Test

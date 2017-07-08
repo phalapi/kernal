@@ -1,5 +1,7 @@
 <?php
-namespace PhalApi;
+namespace PhalApi\Tests;
+
+use PhalApi\Translator;
 
 /**
  * PhpUnderControl_PhalApiTranslator_Test
@@ -36,8 +38,8 @@ class PhpUnderControl_PhalApiTranslator_Test extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('PHPUnit您好，欢迎使用PhalApi！', Translator::get('Hello {name}, Welcome to use PhalApi!', array('name' => 'PHPUnit')));
 
-        $this->assertEquals('PhalApi 我爱你', T('{0} I love you', array('PhalApi')));
-        $this->assertEquals('PhalApi 我爱你因为no reasons', T('{0} I love you because {1}', array('PhalApi', 'no reasons')));
+        $this->assertEquals('PhalApi 我爱你', \PhalApi\T('{0} I love you', array('PhalApi')));
+        $this->assertEquals('PhalApi 我爱你因为no reasons', \PhalApi\T('{0} I love you because {1}', array('PhalApi', 'no reasons')));
     }
 
     /**
@@ -74,7 +76,7 @@ class PhpUnderControl_PhalApiTranslator_Test extends \PHPUnit_Framework_TestCase
     {
         MockTranslator::setLanguageNameSimple(null);
 
-        $rs = T('test');
+        $rs = \PhalApi\T('test');
 
         Translator::setLanguage('zh_cn');
     }

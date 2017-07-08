@@ -92,7 +92,9 @@ class NotORMModel implements Model {
         $className = get_class($this);
         $pos = strpos($className, '\\Model\\');
 
-        $tableName = $pos !== FALSE ? str_replace('\\', '_', substr($className, $pos + 7)) : $className;
+        $tableName = $pos !== FALSE ? substr($className, $pos + 7) : $className;
+        $tableName = str_replace('\\', '_', trim($tableName, '//'));
+
         return strtolower($tableName);
     }
 
