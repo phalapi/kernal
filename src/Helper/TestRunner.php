@@ -42,7 +42,7 @@ class TestRunner {
         $params = array_merge($urlParams, $params);
 
         if (!isset($params['service'])) {
-            throw new Exception(T('miss service in url'));
+            throw new Exception(\PhalApi\T('miss service in url'));
         }
         \PhalApi\DI()->request = new Request($params);
 

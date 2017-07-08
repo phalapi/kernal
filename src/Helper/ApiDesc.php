@@ -29,6 +29,8 @@ class ApiDesc extends ApiOnline {
         $descComment = '//请使用@desc 注释';
         $exceptions = array();
 
+        $projectName = $this->projectName;
+
         try {
             $pai = ApiFactory::generateService(FALSE);
             $rules = $pai->getApiRules();
@@ -107,8 +109,6 @@ class ApiDesc extends ApiOnline {
             //以返回字段为key，保证覆盖
             $returns[$returnCommentArr[1]] = $returnCommentArr; 
         }
-
-        $projectName = $this->projectName;
 
         include dirname(__FILE__) . '/api_desc_tpl.php';
     }
