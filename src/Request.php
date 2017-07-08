@@ -248,13 +248,20 @@ class Request {
      * 获取接口服务名称
      *
      * - 子类可重载此方法指定参数名称，以及默认接口服务
-     * - 需要转换为原始的接口服务格式，即：XXX.XXX
+     * - 需要转换为原始的接口服务格式，即：Namespace.Class.Action
+     * - 当命名空间为空时，默认使用App命名空间
      * - 为保持兼容性，子类需兼容父类的实现
      *
      * @return string 接口服务名称，如：Default.Index
      */
     public function getService() {
-        return $this->get('service', 'App.Site.Index');
+        $service = $this->get('service', 'App.Site.Index');
+
+        if (count(explode('.', $service)) == 2) {
+            $service = 'App.' . $service;
+        }
+
+        return $service;
     }
 
     /**

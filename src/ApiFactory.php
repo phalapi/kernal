@@ -50,10 +50,8 @@ class ApiFactory {
             );
         }
 
-        // 兼容旧格式：Class.Action，新格式：Namespace.Class.Action
-        $apiClass = !empty($namespace) 
-            ? '\\' . str_replace('_', '\\', $namespace) . '\\Api\\' . str_replace('_', '\\', ucfirst($api))
-            : 'Api_' . ucfirst($api);
+        $apiClass = '\\' . str_replace('_', '\\', $namespace) 
+            . '\\Api\\' . str_replace('_', '\\', ucfirst($api));
 
         if (!class_exists($apiClass)) {
             throw new BadRequestException(

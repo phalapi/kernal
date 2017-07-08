@@ -184,7 +184,7 @@ class Api {
         if (isset($filter)) {
             if (!($filter instanceof Filter)) {
                 throw new InternalServerErrorException(
-                    T('DI()->filter should be instanceof Filter'));
+                    T('DI()->filter should be instanceof \PhalApi\Filter'));
             }
 
             $filter->check();

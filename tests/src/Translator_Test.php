@@ -65,7 +65,7 @@ class PhpUnderControl_PhalApiTranslator_Test extends \PHPUnit_Framework_TestCase
     public function testAddMessage() 
     {
         Translator::setLanguage('zh_cn');
-        Translator::addMessage(dirname(__FILE__) . '/test_data');
+        Translator::addMessage(dirname(__FILE__) . '/../test_data');
 
         $this->assertEquals('this is a good way', Translator::get('test'));
     }
