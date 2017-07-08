@@ -82,7 +82,7 @@ class PhpUnderControl_PhalApiLoggerFile_Test extends \PHPUnit_Framework_TestCase
     protected function assertLogExists($content)
     {
         $logFile = implode(DIRECTORY_SEPARATOR, array(
-            dirname(__FILE__) . '/Runtime',
+            dirname(__FILE__) . '/runtime',
             'log',
             date('Ym', time()),
             date('Ymd', time()) . '.log'
