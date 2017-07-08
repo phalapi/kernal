@@ -10,13 +10,14 @@ define('CUR_PATH', dirname(__FILE__));
 if ($argc < 3) {
     echo "\n";
     echo colorfulString("Usage:\n", 'WARNING');
-    echo "   $argv[0] <dbs_config> <table> [engine]\n";
+    echo "   $argv[0] <dbs_config> <table> [engine] [sqls_folder]\n";
     echo "\n";
 
     echo colorfulString("Options:\n", 'WARNING');
     echo colorfulString('    dbs_config', 'NOTE'), "        Require. Path to ./Config/dbs.php\n";
     echo colorfulString('    table', 'NOTE'), "             Require. Table name\n";
     echo colorfulString('    engine', 'NOTE'), "            NOT require. Database engine, default is Innodb\n";
+    echo colorfulString('    sqls_folder', 'NOTE'), "       NOT require. Data foler, default is API_ROOT/data";
     echo "\n";
 
     echo colorfulString("Demo:\n", 'WARNING');
@@ -34,6 +35,7 @@ if ($argc < 3) {
 $dbsConfigFile = trim($argv[1]);
 $tableName = trim($argv[2]);
 $engine = isset($argv[3]) ? $argv[3] : 'InnoDB';
+$dataFoler = isset($argv[4]) ? $argv[4] : CUR_PATH . '/../../../data'; 
 
 if (!file_exists($dbsConfigFile)) {
     echo colorfulString("Error: file $dbsConfigFile not exists!\n\n", 'FAILURE');
@@ -96,7 +98,7 @@ if (empty($tableMap['map'])) {
     exit();
 }
 
-$sqlFilePath = CUR_PATH . '/../Data/' . $tableName . '.sql';
+$sqlFilePath = $dataFoler . '/' . $tableName . '.sql';
 if (!file_exists($sqlFilePath)) {
     echo colorfulString("Error: sql file $sqlFilePath not exists!\n\n", 'FAILURE');
     exit();
