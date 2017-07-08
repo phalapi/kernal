@@ -77,7 +77,7 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
             } 
             ?>
                 <?php
-                $uri  = $env ? '' : str_ireplace('list.php', 'check.php', $_SERVER['REQUEST_URI']);
+                $uri  = !$env ? substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '?')) : '';
                 $num2 = 0;
                 foreach ($allApiS as $key => $item) {
                     ?>
@@ -107,7 +107,7 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
                                     $link = $mItem['service'] . '.html';
                                 }else{
                                     $concator = strpos($uri, '?') ? '&' : '?';
-                                    $link = $uri . $concator . 'service=' . $mItem['service'];
+                                    $link = $uri . $concator . 'service=' . $mItem['service'] . '&detail=1' . '&type=' . $theme;
                                 }
                                 $NO   = $num++;
                                 echo "<tr><td>{$NO}</td><td><a href=\"$link\" target='_blank'>{$mItem['service']}</a></td><td>{$mItem['title']}</td><td>{$mItem['desc']}</td></tr>";

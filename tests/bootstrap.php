@@ -8,6 +8,7 @@ use PhalApi\Filter;
 use PhalApi\Exception\BadRequestException;
 use PhalApi\Response\JsonResponse;
 use PhalApi\Response\JsonpResponse;
+use PhalApi\Database\NotORMDatabase;
 
 /**
  * 接口统一入口
@@ -37,10 +38,10 @@ DI()->logger = new ExplorerLogger(
 
 DI()->debug = true;
 
-//DI()->notorm = function() {
-//    $notorm = new PhalApi_DB_NotORM(DI()->config->get('dbs'), true);
-//    return $notorm;
-//};
+DI()->notorm = function() {
+    $notorm = new NotORMDatabase(\PhalApi\DI()->config->get('dbs'), true);
+    return $notorm;
+};
 
 DI()->cache = function() {
     //$mc = new PhalApi_Cache_Memcached(DI()->config->get('sys.mc'));

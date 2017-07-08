@@ -7,8 +7,9 @@
  * @author: dogstar 20141122
  */
 
-namespace PhalApi\DB;
+namespace PhalApi\Database;
 
+use PhalApi\Database\NotORMDatabase;
 use PhalApi\Exception\Exception;
 use PhalApi\Exception\InternalServerErrorException;
 
@@ -20,7 +21,7 @@ class PhpUnderControl_PhalApiDBNotORM_Test extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->notorm = new NotORM(\PhalApi\DI()->config->get('dbs'), true);
+        $this->notorm = new NotORMDatabase(\PhalApi\DI()->config->get('dbs'), true);
     }
 
     protected function tearDown()
@@ -57,7 +58,7 @@ class PhpUnderControl_PhalApiDBNotORM_Test extends \PHPUnit_Framework_TestCase
      */
     public function testNoMap()
     {
-        $notorm = new NotORM(array());
+        $notorm = new NotORMDatabase(array());
         $rs = $notorm->demo->fetchAll();
     }
 
@@ -231,14 +232,14 @@ class PhpUnderControl_PhalApiDBNotORM_Test extends \PHPUnit_Framework_TestCase
 
     public function testNoKeyIndexAgain()
     {
-        $notorm = new NotORM(\PhalApi\DI()->config->get('dbs')/** , true **/);
+        $notorm = new NotORMDatabase(\PhalApi\DI()->config->get('dbs')/** , true **/);
         $rs = $notorm->demo->order('id DESC')->limit(1, 2)->fetchAll();
         //var_dump($rs);
         //echo (json_encode($rs)), "\n\n";
         $keys = array_keys($rs);
         $this->assertEquals(0, $keys[0]);
 
-        $notorm = new NotORM(\PhalApi\DI()->config->get('dbs')/** , true **/);
+        $notorm = new NotORMDatabase(\PhalApi\DI()->config->get('dbs')/** , true **/);
         $notorm->keepPrimaryKeyIndex();
         $rs = $notorm->demo->order('id DESC')->limit(1, 2)->fetchAll();
         //var_dump($rs);

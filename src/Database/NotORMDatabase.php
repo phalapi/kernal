@@ -1,6 +1,13 @@
 <?php
+namespace PhalApi\Database;
+
+use PDO;
+use PDOException;
+use PhalApi\Database;
+use PhalApi\Exception\InternalServerErrorException;
+
 /**
- * PhalApi\Db\NotORM 分布式的DB存储
+ * PhalApi\Database\NotORM 分布式的DB存储
  *
  * 基于NotORM的数据库操作，支持分布式
  * 
@@ -61,14 +68,7 @@
  * @author      dogstar <chanzonghuang@gmail.com> 2017-07-05
  */
 
-namespace PhalApi\DB;
-
-use PDO;
-use PDOException;
-use PhalApi\DB;
-use PhalApi\Exception\InternalServerErrorException;
-
-class NotORM /** implements DB */ {
+class NotORMDatabase /** implements Database */ {
 
 	/**
 	 * @var NotORM $_notorms NotORM的实例池

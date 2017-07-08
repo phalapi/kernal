@@ -2,7 +2,7 @@
 namespace PhalApi;
 
 /**
- * PhalApi\DB 数据库接口
+ * PhalApi\Database 数据库接口
  * 
  * @TODO 待接口统一
  * 
@@ -12,7 +12,7 @@ namespace PhalApi;
  * @author      dogstar <chanzonghuang@gmail.com> 2015-02-09
  */
 
-interface DB {
+interface Database {
 
 	public function connect();
 	

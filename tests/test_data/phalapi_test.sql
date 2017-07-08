@@ -95,3 +95,19 @@ INSERT INTO `tbl_user` VALUES ('1', 'dogstar', 'oschina', '2015-12-01 09:42:31')
 INSERT INTO `tbl_user` VALUES ('2', 'Tom', 'USA', '2015-12-08 09:42:38');
 INSERT INTO `tbl_user` VALUES ('3', 'King', 'game', '2015-12-23 09:42:42');
 
+-- ----------------------------
+-- Table structure for `tbl_notormtest`
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_notormtest`;
+CREATE TABLE `tbl_notormtest` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` text,
+  `year` tinyint(4) DEFAULT NULL,
+  `ext_data` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tbl_notormtest
+-- ----------------------------
+INSERT INTO `tbl_notormtest` VALUES ('1', 'welcome here', '127', null);
