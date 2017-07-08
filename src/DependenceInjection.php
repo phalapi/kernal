@@ -3,7 +3,7 @@ namespace PhalApi;
 
 use ArrayAccess;
 use Closure;
-use PhalApi\Exception\InternalServerError;
+use PhalApi\Exception\InternalServerErrorException;
 
 /**
  * DependenceInjection 依赖注入类
@@ -157,7 +157,7 @@ class DependenceInjection implements ArrayAccess {
             return $this->get($key, isset($arguments[0]) ? $arguments[0] : NULL);
         }
 
-        throw new InternalServerError(
+        throw new InternalServerErrorException(
             T('Call to undefined method DependenceInjection::{name}() .', array('name' => $name))
         );
     }
