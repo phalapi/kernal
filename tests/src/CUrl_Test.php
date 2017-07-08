@@ -58,4 +58,10 @@ class PhpUnderControl_PhalApiCUrl_Test extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testSet()
+    {
+        $this->curl->setHeader(array('Content-Type' => 'text'));
+        $this->curl->setOption(array('1' => 'a'));
+    }
+
 }

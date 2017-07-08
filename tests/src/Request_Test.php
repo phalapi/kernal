@@ -186,6 +186,16 @@ class PhpUnderControl_PhalApiRequest_Test extends \PHPUnit_Framework_TestCase
         $requests = new RequestTestMock(array());
         $requests->getDataBySource('no_this_source');
     }
+
+    public function testGetSource()
+    {
+        $requests = new RequestTestMock(array());
+        foreach (array('post', 'cookie', 'get', 'request', 'server', 'header') as $source) {
+            $rs = $requests->getDataBySource($source);
+
+            $this->assertTrue(is_array($rs));
+        }
+    }
 }
 
 class RequestTestMock extends Request {

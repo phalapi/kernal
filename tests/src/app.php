@@ -2,8 +2,18 @@
 
 namespace App\Api {
 
+    /**
+     * Site Api
+     * @desc site api
+     */
     class Site extends \PhalApi\Api
     {
+        /**
+         * @desc brabrabra~~   
+         * @param int user_id ID
+         * @return int code sth...
+         * @exception 500 something wrong
+         */
         public function index()
         {
         }

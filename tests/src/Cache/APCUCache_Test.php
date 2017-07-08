@@ -2,6 +2,7 @@
 namespace PhalApi\Tests;
 
 use PhalApi\Cache\APCUCache;
+use PhalApi\Exception\InternalServerErrorException;
 
 include_once dirname(__FILE__) . '/apcu.php';
 
@@ -80,6 +81,13 @@ class PhpUnderControl_PhalApi_Cache_APCU_Test extends \PHPUnit_Framework_TestCas
         $this->assertEquals('A3', $this->aPCU->get($key));
     }
 
+    public function testWithoutAPCU()
+    {
+        try {
+            $apcu = new APCUCache();
+        } catch (InternalServerErrorException $ex) {
+        }
+    }
 }
 
 class APCUCacheMock extends APCUCache {

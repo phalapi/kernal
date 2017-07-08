@@ -75,6 +75,18 @@ class PhpUnderControl_PhalApiCookieMulti_Test extends \PHPUnit_Framework_TestCas
         $this->assertNull($this->multiCookie->get($name));
     }
 
+    public function testReset()
+    {
+        $multi = new MultiCookie(array('crypt' => 'WRONG'));
+
+        //$multi->set('a_array', array('name' => 'phalapi'));
+
+        $_COOKIE['a_array'] = array('name' => 'phalapi');
+
+        $rs = $multi->get('a_array');
+
+        $this->assertEquals(array('name' => 'phalapi'), $rs);
+    }
 }
 
 class CookieCryptMock implements Crypt {

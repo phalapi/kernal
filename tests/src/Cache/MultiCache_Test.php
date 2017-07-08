@@ -68,6 +68,11 @@ class PhpUnderControl_PhalApiCacheMulti_Test extends \PHPUnit_Framework_TestCase
         $this->assertSame('haha~', $rs);
     }
 
+    public function testGetNull()
+    {
+        $this->assertNull($this->multiCache->get('whatever'));
+    }
+
     /**
      * @group testDelete
      */ 

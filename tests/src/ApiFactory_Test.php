@@ -129,4 +129,15 @@ class PhpUnderControl_PhalApiApiFactory_Test extends \PHPUnit_Framework_TestCase
             array('App.Site.Index'),
         );
     }
+
+    /**
+     * @expectedException PhalApi\Exception\BadRequestException
+     */
+    public function testWrongAction()
+    {
+        $data = array();
+        $data['service'] = 'ServiceWhitelist.NoThisMethod';
+        \PhalApi\DI()->request = new Request($data);
+        $rs = ApiFactory::generateService();
+    }
 }

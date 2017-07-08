@@ -55,6 +55,7 @@ class PhpUnderControl_PhalApi_Test extends \PHPUnit_Framework_TestCase
      */ 
     public function testResponseWithJsonPMock()
     {
+        \PhalApi\SL('zh_cn');
         \PhalApi\DI()->response = new JsonpResponseMock('test');
 
         $rs = $this->phalApi->response();

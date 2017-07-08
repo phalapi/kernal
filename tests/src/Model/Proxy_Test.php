@@ -47,6 +47,24 @@ class PhpUnderControl_PhalApiModelProxy_Test extends \PHPUnit_Framework_TestCase
         $query->writeCache = false;
 
         $rs = $this->proxy->getData($query);
+        $this->assertEquals('heavy data', $rs);
+    }
+
+    public function testGetDataWithCache()
+    {
+        $query = new Query();
+        $query->id = 1;
+        $query->readCache = true;
+        $query->writeCache = true;
+
+        $rs = $this->proxy->getData($query);
+        $this->assertEquals('heavy data', $rs);
+    }
+
+    public function testNewWithNull()
+    {
+        $proxy = new ProxyMock(NULL);
+        $proxy->getData();
     }
 }
 

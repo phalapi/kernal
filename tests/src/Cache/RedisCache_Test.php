@@ -2,6 +2,7 @@
 namespace PhalApi\Tetsts;
 
 use PhalApi\Cache\RedisCache;
+use PhalApi\Exception\InternalServerErrorException;
 
 include_once dirname(__FILE__) . '/redis.php';
 
@@ -174,5 +175,20 @@ class PhpUnderControl_PhalApiRedis_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals('www', $this->phalApiRedis->lPop($key));
         $this->assertEquals('phalapi', $this->phalApiRedis->lPop($key));
         $this->assertEquals('net', $this->phalApiRedis->lPop($key));
+    }
+
+    public function testCreateFail()
+    {
+        try {
+            $cache = new RedisCache(array('type' => 'unix'));
+        } catch (InternalServerErrorException $ex) {
+        }
+    }
+
+    public function testAuth()
+    {
+        $config = array('host' => '127.0.0.1', 'port' => 6379, 'auth' => 'xx');
+        $redis = new RedisCache($config);
+
     }
 }

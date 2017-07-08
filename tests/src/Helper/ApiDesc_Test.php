@@ -5,6 +5,8 @@ use PhalApi\Helper\ApiDesc;
 use PhalApi\Request;
 use PhalApi\Api;
 
+include_once dirname(__FILE__) . '/../app.php';
+
 /**
  * PhpUnderControl_PhalApiHelperApiDesc_Test
  *
@@ -50,10 +52,18 @@ class PhpUnderControl_PhalApiHelperApiDesc_Test extends \PHPUnit_Framework_TestC
 
     public function testRenderNormal()
     {
-        \PhalApi\DI()->request = new Request(array('service' => 'Helper_User_Mock.GetBaseInfo'));
+        \PhalApi\DI()->request = new Request(array('service' => 'UserMock.GetBaseInfo'));
         $rs = $this->apiDesc->render();
 
-        $this->expectOutputRegex("/Helper_User_Mock.GetBaseInfo/");
+        $this->expectOutputRegex("/UserMock.GetBaseInfo/");
+    }
+
+    public function testRenderSite()
+    {
+        \PhalApi\DI()->request = new Request(array('service' => 'Site.Index'));
+        $rs = $this->apiDesc->render();
+
+        $this->expectOutputRegex("/Site.Index/");
     }
 }
 
