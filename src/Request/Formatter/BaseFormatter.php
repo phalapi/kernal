@@ -2,6 +2,8 @@
 namespace PhalApi\Request\Formatter;
 
 use PhalApi\Request\Formatter;
+use PhalApi\Exception\BadRequestException;
+use PhalApi\Exception\InternalServerErrorException;
 
 /**
  * BaseFormatter 公共基类
