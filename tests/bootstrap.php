@@ -169,11 +169,3 @@ class ImplExceptionFilter implements Filter {
         throw new BadRequestException('just for test');
     }
 }
-
-if (!class_exists('Yaconf', false)) {
-    class Yaconf {
-        public static function __callStatic($method, $params) {
-            echo "Yaconf::$method()...\n";
-        }
-    }
-}
