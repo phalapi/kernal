@@ -1,4 +1,4 @@
-# kernal
+# PhalApi 2.x 核心框架
 
 [![Latest Stable Version](https://poser.pugx.org/phalapi/kernal/v/stable)](https://packagist.org/packages/phalapi/kernal)
 [![Total Downloads](https://poser.pugx.org/phalapi/kernal/downloads)](https://packagist.org/packages/phalapi/kernal)
