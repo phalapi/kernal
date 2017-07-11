@@ -17,10 +17,10 @@ final class Env
 
     public static $instance = null;
 
-    public static function init()
+    private static function init()
     {
-        if (empty(self::$file_path) && is_file(API_ROOT . '.env')) {
-            self::$file_path = API_ROOT . '.env';
+        if (empty(self::$file_path) && is_file(API_ROOT . '/.env')) {
+            self::$file_path = API_ROOT . '/.env';
         }
         if (empty(self::$env_array)) {
             self::$env_array = is_file(self::$file_path) ? parse_ini_file(self::$file_path, true) : [];
@@ -42,7 +42,7 @@ final class Env
         return self::$instance;
     }
 
-    public static function get($index, $default = null)
+    public static function get($index = '', $default = null)
     {
         self::init();
         if (strpos($index, '.')) {
