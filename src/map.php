@@ -67,6 +67,7 @@ abstract class PhalApi_Response extends PhalApi\Response {};
 class PhalApi_Response_Explorer extends PhalApi\Response\ExplorerResponse {};
 class PhalApi_Response_Json extends PhalApi\Response\JsonResponse {};
 class PhalApi_Response_JsonP extends PhalApi\Response\JsonpResponse {};
+class PhalApi_Response_Xml extends PhalApi\Response\XmlResponse {};
 class PhalApi_Tool extends PhalApi\Tool {};
 class PhalApi_Translator extends PhalApi\Translator {};
 
