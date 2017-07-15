@@ -134,7 +134,7 @@ class Tool {
             if(is_array($val)){
                 $xml.=self::arrayToXml($val,"$key",$num);
             } else {
-                $xml.="<".$key.">".$val."</".$key.">";
+                $xml.="<".$key."><![CDATA[".$val."]]></".$key.">";
             }
         }
         $xml .="</$root>";
