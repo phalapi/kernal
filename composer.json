@@ -25,6 +25,7 @@
   },
   "autoload": {
     "files": [
+      "src/bootstrap.php",
       "src/map.php",
       "src/functions.php"
     ],

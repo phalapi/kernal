@@ -3,3 +3,5 @@ vendor/
 .project
 .buildpath
 
+tests/src/Cache/cache
+
