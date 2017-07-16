@@ -251,11 +251,12 @@ class Request {
      * - 需要转换为原始的接口服务格式，即：Namespace.Class.Action
      * - 当命名空间为空时，默认使用App命名空间
      * - 为保持兼容性，子类需兼容父类的实现
+     * - 参数名为：service，支持短参数名：s，并优先完全参数名
      *
      * @return string 接口服务名称，如：Default.Index
      */
     public function getService() {
-        $service = $this->get('service', 'App.Site.Index');
+        $service = $this->get('service', $this->get('s', 'App.Site.Index'));
 
         if (count(explode('.', $service)) == 2) {
             $service = 'App.' . $service;
