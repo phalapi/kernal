@@ -38,7 +38,16 @@ $di->loader = $loader;
 
 $di->config = new FileConfig(dirname(__FILE__) . '/config');
 
-$di->logger = new ExplorerLogger(
+class ExplorerLoggerTest extends ExplorerLogger {
+
+    public function log($type, $msg, $data) {
+        if (empty($_ENV['silence'])) {
+            parent::log($type, $msg, $data);
+        }
+    }
+}
+
+$di->logger = new ExplorerLoggerTest(
 		Logger::LOG_LEVEL_DEBUG | Logger::LOG_LEVEL_INFO | Logger::LOG_LEVEL_ERROR);
 
 $di->debug = true;
@@ -59,18 +68,24 @@ class MemcachedMock {
 
     public function __call($method, $params)
     {
-        echo 'Memcached::' . $method . '() with: ', json_encode($params), " ... \n";
+        if (empty($_ENV['silence'])) {
+            echo 'Memcached::' . $method . '() with: ', json_encode($params), " ... \n";
+        }
     }
 
     public function get($key)
     {
-        echo "Memcached::get($key) ... \n";
+        if (empty($_ENV['silence'])) {
+            echo "Memcached::get($key) ... \n";
+        }
         return isset($this->data[$key]) ? $this->data[$key] : null;
     }
 
     public function set($key, $value, $expire)
     {
-        echo "Memcached::get($key, ", json_encode($value), ", $expire) ... \n";
+        if (empty($_ENV['silence'])) {
+            echo "Memcached::get($key, ", json_encode($value), ", $expire) ... \n";
+        }
         $this->data[$key] = $value;
     }
 
@@ -89,14 +104,18 @@ $di->crypt = function() {
 class MockCrypt implements Crypt
 {
 	public function encrypt($data, $key)
-	{
-		echo "Crypt_Mock::encrypt($data, $key) ... \n";
+    {
+        if (empty($_ENV['silence'])) {
+            echo "Crypt_Mock::encrypt($data, $key) ... \n";
+        }
 		return $data;
 	}
 	
 	public function decrypt($data, $key)
-		{
-		echo "Crypt_Mock::decrypt($data, $key) ... \n";
+    {
+        if (empty($_ENV['silence'])) {
+            echo "Crypt_Mock::decrypt($data, $key) ... \n";
+        }
 		return $data;
 	}
 }
