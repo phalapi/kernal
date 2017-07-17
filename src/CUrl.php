@@ -42,14 +42,18 @@ class CUrl {
     
     protected $option = array();
     
+    protected $hascookie = FALSE;
+    
+    protected $cookie = array();
+    
     /**
      * 设置请求头，后设置的会覆盖之前的设置
      *
      * @param array $header 传入键值对如：
 ```     
      * array(
-     *     ['Accept'=>'text/html'],
-     *     ['Connection'=>'keep-alive'],
+     *     'Accept'=>'text/html',
+     *     'Connection'=>'keep-alive',
      * )
 ```     
      *
@@ -71,7 +75,7 @@ class CUrl {
      */
     public function setOption( $option )
     {
-        $this->option = array_merge( $this->option, $option);
+        $this->option = $option + $this->option;
         return $this;
     }
 
@@ -104,6 +108,31 @@ class CUrl {
         return $this->request($url, $data, $timeoutMs);
     }
     
+    public function withCookies(){
+        $this->hascookie = TRUE;
+        if(!empty($this->cookie)){
+            $this->setHeader ( ['Cookie' => $this->getCookieString()]);
+        }
+        $this->setOption ( [CURLOPT_COOKIEFILE => '']);
+        return $this;
+    }
+    
+    /**
+     * @param array $cookie
+     */
+    public function setCookie( $cookie )
+    {
+        $this->cookie = $cookie;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getCookie()
+    {
+        return $this->cookie;
+    }
+    
     /**
      *
      * @return array
@@ -111,7 +140,7 @@ class CUrl {
     protected function getHeaders() {
         $arrHeaders = array();
         foreach ($this->header as $key => $val) {
-            $arrHeaders[] = $key . ':' . $val;
+            $arrHeaders[] = $key . ': ' . $val;
         }
         return $arrHeaders;
     }
@@ -122,6 +151,7 @@ class CUrl {
      * @param array $data POST的数据
      * @param int $timeoutMs 超时设置，单位：毫秒
 	 * @return string 接口返回的内容，超时返回false
+     * @throws Exception
      */
     protected function request($url, $data, $timeoutMs = 3000) {
         $options = array(
@@ -146,9 +176,37 @@ class CUrl {
             $rs = curl_exec($ch);
             $curRetryTimes--;
         } while($rs === FALSE && $curRetryTimes >= 0);
-
+        $errno = curl_errno($ch);
+        if ($errno) {
+            throw new Exception(sprintf("%s::%s(%d)\n", $url, curl_error($ch), $errno));
+        }
+        //update cookie
+        if($this->hascookie){
+            $cookie = $this->getRetCookie(curl_getinfo($ch, CURLINFO_COOKIELIST));
+            !empty( $cookie) && $this->cookie = $cookie + $this->cookie;
+            $this->hascookie = FALSE;
+            unset( $this->header['Cookie']);
+            unset( $this->option[CURLOPT_COOKIEFILE]);
+        }
         curl_close($ch);
 
         return $rs;
+    }
+    
+    protected function getRetCookie(array $cookies){
+        $ret = [];
+        foreach($cookies as $cookie){
+            $arr = explode("\t",$cookie);
+            $ret[$arr[5]] = $arr[6];
+        }
+        return $ret;
+    }
+    
+    protected function getCookieString(){
+        $ret = '';
+        foreach($this->getCookie() as $key => $val){
+            $ret .= $key . '=' . $val . ';';
+        }
+        return trim($ret,';');
     }
 }
