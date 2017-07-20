@@ -196,7 +196,7 @@ class CUrl {
     }
     
     protected function getRetCookie(array $cookies){
-        $ret = [];
+        $ret = array();
         foreach($cookies as $cookie){
             $arr = explode("\t",$cookie);
             $ret[$arr[5]] = $arr[6];
