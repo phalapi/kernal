@@ -108,12 +108,14 @@ class CUrl {
         return $this->request($url, $data, $timeoutMs);
     }
     
-    public function withCookies(){
+    public function withCookies() {
         $this->hascookie = TRUE;
-        if(!empty($this->cookie)){
-            $this->setHeader ( ['Cookie' => $this->getCookieString()]);
+
+        if (!empty($this->cookie)) {
+            $this->setHeader(array('Cookie' => $this->getCookieString()));
         }
-        $this->setOption ( [CURLOPT_COOKIEFILE => '']);
+        $this->setOption(array(CURLOPT_COOKIEFILE => ''));
+
         return $this;
     }
     
