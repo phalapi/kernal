@@ -133,8 +133,14 @@ class ApiList extends ApiOnline {
         }
 
         //echo json_encode($allApiS) ;
-        //字典排列
-        ksort($allApiS);
+        // 字典排列与过滤
+        foreach ($allApiS as $namespace => &$subAllApiS) {
+            ksort($subAllApiS);
+            if (empty($subAllApiS)) {
+                unset($allApiS[$namespace]);
+            }
+        }
+        unset($subAllApiS);
 
         $projectName = $this->projectName;
 

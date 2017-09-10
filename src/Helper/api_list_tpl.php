@@ -31,7 +31,7 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
             if ($theme == 'fold') {
             ?>
             <div class="four wide column">
-                <div class="ui vertical pointing menu">
+                <div class="ui vertical accordion menu">
                 <?php 
                     // 总接口数量
                     $methodTotal = 0;
@@ -89,7 +89,7 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
                             }
                         }
                     }
-                    $allApiS = $mergeAllApiS;
+                    $allApiS = array('ALL' => $mergeAllApiS);
             } 
             ?>
                 <?php
@@ -163,10 +163,10 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
     </div>
 </div>
 <script type="text/javascript">
-    $('.pointing.menu .item').tab({'deactivate':'all'});
+    $('.accordion.menu a.item').tab({'deactivate':'all'});
     $('.ui.sticky').sticky();
 	//当点击跳转链接后，回到页面顶部位置
-    $(".pointing.menu .item").click(function() {
+    $(".accordion.menu a.item").click(function() {
         $('body,html').animate({
                 scrollTop: 0
             },
@@ -174,7 +174,7 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
         return false;
     });
 
-    $('.ui.pointing').accordion({'exclusive':false});
+    $('.ui.accordion').accordion({'exclusive':false});
 
     checkLastestVersion();
 
