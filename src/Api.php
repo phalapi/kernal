@@ -211,10 +211,15 @@ class Api {
         $di = DI();
         $api = $di->request->getServiceApi();
         $action = $di->request->getServiceAction();
+        $namespace = $di->request->getNamespace();
 
-        $serviceWhitelist = $di->config->get('app.service_whitelist', array());
+        // 优先命名空间的单独白名单配置，再到公共白名单配置
+        $serviceWhitelist = $di->config->get('app.service_whitelist.' . $namespace);
+        $serviceWhitelist = $serviceWhitelist !== NULL 
+            ? $serviceWhitelist : $di->config->get('app.service_whitelist', array());
+
         foreach ($serviceWhitelist as $item) {
-            $cfgArr = explode('.', $item);
+            $cfgArr = is_string($item) ? explode('.', $item) : array();
             if (count($cfgArr) < 2) {
                 continue;
             }
