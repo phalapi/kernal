@@ -172,7 +172,7 @@ foreach ($rules as $key => $rule){
     $name = $rule['name'];
     $require = isset($rule['require']) && $rule['require'] ? '<font color="red">必须</font>' : '可选';
     $default = isset($rule['default']) ? $rule['default'] : '';
-    $desc = isset($rule['desc']) ? trim($rule['desc']) : '';
+    $desc = isset($rule['desc']) ? htmlspecialchars(trim($rule['desc'])) : '';
     $inputType = (isset($rule['type']) && $rule['type'] == 'file') ? 'file' : 'text';
     echo <<<EOT
         <tr>
