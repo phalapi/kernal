@@ -15,6 +15,21 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
     <meta name="robots" content="none"/>
 </head>
 <body>
+
+  <div class="ui fixed inverted menu">
+    <div class="ui container">
+      <a href="/docs.php" class="header item">
+        <img class="logo" src="http://7xiz2f.com1.z0.glb.clouddn.com/20180316214150_f6f390e686d0397f1f1d6a66320864d6">
+        <?php echo $projectName; ?>
+      </a>
+      <a href="https://www.phalapi.net/" class="item">PhalApi</a>
+      <a href="http://docs.phalapi.net/#/v2.0/" class="item">文档</a>
+      <a href="http://qa.phalapi.net/" class="item">社区</a>
+    </div>
+  </div>
+
+<div class="row"></div>
+<br />
 <br/>
 
 
