@@ -123,11 +123,11 @@ echo <<<EOT
 EOT;
 
 foreach ($returns as $item) {
-	$name = $item[1];
-	$type = isset($typeMaps[$item[0]]) ? $typeMaps[$item[0]] : $item[0];
-	$detail = $item[2];
-	
-	echo "<tr><td>$name</td><td>$type</td><td>$detail</td></tr>";
+    $name = $item[1];
+    $type = isset($typeMaps[$item[0]]) ? $typeMaps[$item[0]] : $item[0];
+    $detail = $item[2];
+
+    echo "<tr><td>$name</td><td>$type</td><td>$detail</td></tr>";
 }
 
 echo <<<EOT
@@ -179,23 +179,28 @@ echo <<<EOT
         <tr>
             <td>service</td>
             <td><font color="red">必须</font></td>
-            <td><input name="service" value="{$service}" style="width:100%;" class="C_input" /></td>
+            <td><input name="service" data-source="get" value="{$service}" style="width:100%;" class="C_input" /></td>
         </tr>
 EOT;
 foreach ($rules as $key => $rule){
     $name = $rule['name'];
     $require = isset($rule['require']) && $rule['require'] ? '<font color="red">必须</font>' : '可选';
     $default = isset($rule['default'])
-        ? (is_array($rule['default']) ? json_encode($rule['default']) : $rule['default'])  
+        ? (is_array($rule['default']) ? json_encode($rule['default']) : $rule['default'])
         : '';
     $default = htmlspecialchars($default);
     $desc = isset($rule['desc']) ? htmlspecialchars(trim($rule['desc'])) : '';
     $inputType = (isset($rule['type']) && $rule['type'] == 'file') ? 'file' : 'text';
+    $source = isset($rule['source']) ? $rule['source'] : '';
+    $multiple = '';
+    if ($inputType == 'file') {
+        $multiple = 'multiple="multiple"';
+    }
     echo <<<EOT
         <tr>
             <td>{$name}</td>
             <td>{$require}</td>
-            <td><input name="{$name}" value="{$default}" placeholder="{$desc}" style="width:100%;" class="C_input" type="$inputType"/></td>
+            <td><input name="{$name}" value="{$default}" data-source="{$source}" placeholder="{$desc}" style="width:100%;" class="C_input" type="$inputType" $multiple/></td>
         </tr>
 EOT;
 }
@@ -203,10 +208,10 @@ echo <<<EOT
     </tbody>
 </table>
 <div style="display: flex;align-items:center;">
-    <select name="request_type" style="font-size: 14px; padding: 2px;">
+    <!--<select name="request_type" style="font-size: 14px; padding: 2px;">
         <option value="POST">POST</option>
         <option value="GET">GET</option>
-    </select>
+    </select>-->
 EOT;
 $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) ? 'https://' : 'http://';
 $url = $url . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost');
@@ -239,10 +244,15 @@ echo <<<EOT
     <script type="text/javascript">
         function getData() {
             var data = new FormData();
+            var param = [];
             $("td input").each(function(index,e) {
                 if ($.trim(e.value)){
                     if (e.type != 'file'){
-                        data.append(e.name, e.value);
+                        if ($(e).data('source') == 'get') {
+                            param.push(e.name + '=' + e.value);
+                        } else {
+                            data.append(e.name, e.value);
+                        }
 
                         $.cookie(e.name, e.value, {expires: 30});
                     } else{
@@ -257,16 +267,23 @@ echo <<<EOT
                     }
                 }
             });
-            return data;
+            param = param.join('&');
+            return {param:param, data:data};
         }
         
         $(function(){
             $("#json_output").hide();
             $("#submit").on("click",function(){
+                var data = getData();
+                var url_arr = $("input[name=request_url]").val().split('?');
+                var url = url_arr.shift();
+                var param = url_arr.join('?');
+                param = param.length > 0 ? param + '&' + data.param : data.param;
+                url = url + '?' + param;
                 $.ajax({
-                    url:$("input[name=request_url]").val(),
-                    type:$("select").val(),
-                    data:getData(),
+                    url: url,
+                    type:'post',
+                    data:data.data,
                     cache: false,
                     processData: false,
                     contentType: false,
