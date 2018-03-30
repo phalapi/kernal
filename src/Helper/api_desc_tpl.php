@@ -52,7 +52,7 @@ echo <<<EOT
                     <p>{$descComment}</p>
                 </div>
             </div>
-            <h3>接口参数</h3>
+            <h3><i class="sign in alternate icon"></i>接口参数</h3>
             <table class="ui red celled striped table" >
                 <thead>
                     <tr><th>参数名字</th><th>类型</th><th>是否必须</th><th>默认值</th><th>其他</th><th>说明</th></tr>
@@ -114,7 +114,7 @@ foreach ($rules as $key => $rule) {
 echo <<<EOT
                 </tbody>
             </table>
-            <h3>返回结果</h3>
+            <h3><i class="sign out alternate icon"></i>返回结果</h3>
             <table class="ui green celled striped table" >
                 <thead>
                     <tr><th>返回字段</th><th>类型</th><th>说明</th></tr>
@@ -140,7 +140,7 @@ EOT;
  */
 if (!empty($exceptions)) {
     echo <<<EOT
-            <h3>异常情况</h3>
+            <h3><i class="bell icon"></i>异常情况</h3>
             <table class="ui red celled striped table" >
                 <thead>
                     <tr><th>错误码</th><th>错误描述信息</th>
@@ -165,7 +165,7 @@ EOT;
  */
 echo <<<EOT
 <h3>
-    请求模拟 &nbsp;&nbsp;
+    <i class="bug icon"></i>请求模拟 &nbsp;&nbsp;
 </h3>
 EOT;
 
@@ -217,8 +217,16 @@ $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) ? 'https://' : 'http://';
 $url = $url . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost');
 $url .= substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/') + 1);
 echo <<<EOT
-&nbsp;<input name="request_url" value="{$url}" style="width:500px; height:24px; line-height:18px; font-size:13px;position:relative; padding-left:5px;margin-left: 10px"/>
-    <input type="submit" name="submit" value="发送" id="submit" style="font-size:14px;line-height: 20px;margin-left: 10px "/>
+<!--
+接口链接：&nbsp;<input name="request_url" value="{$url}" style="width:500px; height:24px; line-height:18px; font-size:13px;position:relative; padding-left:5px;margin-left: 10px"/>
+    <input type="submit" name="submit" value="发送" id="submit" style="font-size:14px;line-height: 20px;margin-left: 10px " class="ui green button" />
+-->
+
+</div>
+
+<div class="ui fluid action input">
+      <input placeholder="请求的接口链接" type="text" name="request_url" value="{$url}" >
+      <button class="ui button green" id="submit" >请求当前接口</button>
 </div>
 EOT;
 
