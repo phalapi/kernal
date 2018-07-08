@@ -126,6 +126,16 @@ class NotORMModel implements Model {
         return \PhalApi\DI()->notorm->$table;
     }
 
+    /**
+     * 快速获取指定table的ORM实例.
+     * @param string $table 表名可指定服务器,比如demo2.user
+     * @return \NotORM_Result
+     */
+    protected function table($table)
+    {
+        return \PhalApi\DI()->notorm->$table;
+    }
+
     protected function loadTableKeys() {
         $tables = \PhalApi\DI()->config->get('dbs.tables');
         if (empty($tables)) {
