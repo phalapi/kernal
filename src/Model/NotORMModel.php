@@ -119,7 +119,7 @@ class NotORMModel implements Model {
     /**
      * 快速获取ORM实例，注意每次获取都是新的实例
      * @param string/int $id
-     * @return NotORM_Result
+     * @return \NotORM_Result
      */
     protected function getORM($id = NULL) {
         $table = $this->getTableName($id);
