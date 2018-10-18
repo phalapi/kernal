@@ -7,11 +7,12 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
 <head>
     <meta charset="utf-8">
     <title><?php echo $projectName; ?> - 在线接口列表</title>
-    <link href="https://cdn.bootcss.com/semantic-ui/2.2.2/semantic.min.css" rel="stylesheet">
+
+    <link href="https://lib.baomitu.com/semantic-ui/2.3.3/semantic.min.css" rel="stylesheet">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
-    <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/semantic-ui/2.2.2/semantic.min.js"></script>
+    <script src="https://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://lib.baomitu.com/semantic-ui/2.3.3/semantic.min.js"></script>
     <meta name="robots" content="none"/>
 </head>
 <body>
