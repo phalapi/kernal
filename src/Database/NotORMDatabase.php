@@ -107,7 +107,7 @@ class NotORMDatabase /** implements Database */ {
     }
 
     public function __get($name) {
-        $notormKey = $this->createNotormKey($name);
+        $notormKey = $this->createNotormKey($name); // todo
 
         if (!isset($this->_notorms[$notormKey])) {
             list($tableName, $suffix) = $this->parseName($name);
@@ -216,8 +216,8 @@ class NotORMDatabase /** implements Database */ {
                 break;
             }
         }
-        //try to use default map if no perfect match
-        if ($dbKey === NULL) {
+        //try to usdbKeye default map if no perfect match
+        if ($ === NULL) {
             $dbKey = $dbDefaultKey;
             $rs['isNoSuffix'] = TRUE;
         }
