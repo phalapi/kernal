@@ -13,31 +13,29 @@ class ApiStaticCreate extends ApiList
 {
 
     protected $webRoot = '';
+    protected $theme = '';
+
+    public function __construct($projectName, $theme) {
+        parent::__construct($projectName);
+        $this->theme = $theme;
+    }
+
 
     public function render($tplPath = NULL) {
-
+        $theme = $this->theme;
         $trace = debug_backtrace();
         $listFilePath = $trace[0]['file'];
         $this->webRoot = substr($listFilePath, 0, strrpos($listFilePath, D_S));
-        global $argv;
-        $theme = isset($argv[1]) ? $argv[1] : 'fold';
         ob_start();
         // 运行模式
         parent::render($tplPath);
         $string = ob_get_clean();
         \PhalApi\Helper\saveHtml($this->webRoot, 'index', $string);
-        $str = <<<EOT
-Usage:
-
-生成展开版：  php {$argv[0]} expand
-生成折叠版：  php {$argv[0]} fold
-
+        $str = "
 脚本执行完毕！离线文档保存路径为：
-EOT;
-        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-            $str = iconv('utf-8', 'gbk', $str);
-        }
-        echo $str, $this->webRoot . D_S . 'docs', PHP_EOL, PHP_EOL;
+";
+        $str .= $this->webRoot;
+        echo $str . D_S . 'docs', PHP_EOL, PHP_EOL;
 
     }
 

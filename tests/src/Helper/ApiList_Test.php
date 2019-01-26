@@ -12,6 +12,7 @@ use PhalApi\Helper\ApiList;
 use PhalApi\Helper\ApiStaticCreate;
 use PhalApi\Request;
 use PhalApi\Api;
+use PHPUnit\Framework\TestCase;
 
 include_once dirname(__FILE__) . '/../app.php';
 
@@ -21,7 +22,7 @@ include_once dirname(__FILE__) . '/../app.php';
  * 针对 ../../PhalApi/Helper/ApiDesc.php PhalApi_Helper_ApiDesc 类的PHPUnit单元测试
  *
  */
-class PhpUnderControl_PhalApiHelperApiDesc_Test extends PHPUnit_Framework_TestCase
+class PhpUnderControl_PhalApiHelperApiDesc_Test extends TestCase
 {
     public $api;
 
