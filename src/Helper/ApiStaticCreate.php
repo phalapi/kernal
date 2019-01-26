@@ -55,4 +55,8 @@ class ApiStaticCreate extends ApiList
     public function getUri() {
         return '';
     }
+
+    public function makeThemeButton($theme) {
+        return '';
+    }
 }
