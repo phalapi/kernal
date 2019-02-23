@@ -22,7 +22,7 @@ include_once dirname(__FILE__) . '/../app.php';
  * 针对 ../../PhalApi/Helper/ApiDesc.php PhalApi_Helper_ApiDesc 类的PHPUnit单元测试
  *
  */
-class PhpUnderControl_PhalApiHelperApiDesc_Test extends TestCase
+class PhpUnderControl_PhalApiHelperApiList_Test extends TestCase
 {
     public $api;
 
@@ -54,7 +54,7 @@ class PhpUnderControl_PhalApiHelperApiDesc_Test extends TestCase
 
 }
 
-class UserMock extends Api
+class UserMockForList extends Api
 {
 
     /**
