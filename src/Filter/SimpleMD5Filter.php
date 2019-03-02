@@ -27,7 +27,7 @@ class SimpleMD5Filter implements Filter {
     protected $signName;
     protected $separator;
 
-    public function __construct($signName = 'sign',$separator = '=') {
+    public function __construct($signName = 'sign', $separator = false) {
         $this->signName = $signName;
         $this->separator = $separator;
     }
@@ -54,8 +54,10 @@ class SimpleMD5Filter implements Filter {
 
         $paramsStrExceptSign = '';
         foreach ($params as $index => $val) {
-            if (isset($val) && $val) {
+            if($this->separator && isset($val) && $val){
                 $paramsStrExceptSign .= $index . $this->separator . $val;
+            }else{
+                $paramsStrExceptSign .= $val;
             }
         }
 
