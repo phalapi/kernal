@@ -55,7 +55,7 @@ class SimpleMD5Filter implements Filter {
         $paramsStrExceptSign = '';
         foreach ($params as $index => $val) {
             if($this->separator && isset($val) && $val){
-                $paramsStrExceptSign .= $index . $this->separator . $val;
+                $paramsStrExceptSign .= ($index . $this->separator . $val);
             }else{
                 $paramsStrExceptSign .= $val;
             }
