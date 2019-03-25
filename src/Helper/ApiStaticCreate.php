@@ -15,7 +15,7 @@ class ApiStaticCreate extends ApiList
     protected $webRoot = '';
     protected $theme = '';
 
-    public function __construct($projectName, $theme) {
+    public function __construct($projectName, $theme = 'fold') {
         parent::__construct($projectName);
         $this->theme = $theme;
     }
