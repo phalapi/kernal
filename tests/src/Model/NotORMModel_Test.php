@@ -192,19 +192,34 @@ class PhpUnderControl_PhalApiModelNotORM_Test extends \PHPUnit_Framework_TestCas
         $this->assertEquals(2, $rs);
     }
 
-    public function testUpdateCounters()
+    public function testUpdateCounter()
     {
         $oldData = \PhalApi\DI()->notorm->notormtest->where('id', 1)->fetchPairs('id', 'year');
 
-        $rs = \PhalApi\DI()->notorm->notormtest->where('id', 1)->updateCounters('year', 1);
+        $rs = \PhalApi\DI()->notorm->notormtest->where('id', 1)->updateCounter('year', 1);
         $afterIncdData = \PhalApi\DI()->notorm->notormtest->where('id', 1)->fetchPairs('id', 'year');
         $this->assertEquals($afterIncdData[1], $oldData[1] + 1);
         $this->assertEquals(1, $rs);
 
 
-        $rs = \PhalApi\DI()->notorm->notormtest->where('id', 1)->updateCounters('year', -1);
+        $rs = \PhalApi\DI()->notorm->notormtest->where('id', 1)->updateCounter('year', -1);
         $afterDecData = \PhalApi\DI()->notorm->notormtest->where('id', 1)->fetchPairs('id', 'year');
         $this->assertEquals($afterDecData[1], $afterIncdData[1] - 1);
         $this->assertEquals(1, $rs);
+    }
+
+    public function testUpdateMultiCounters()
+    {
+        $oldData = \PhalApi\DI()->notorm->notormtest->where('id', 1)->fetchPairs('id', 'year');
+
+        $rs = \PhalApi\DI()->notorm->notormtest->where('id', 1)->updateMultiCounters(array('year' => 2));
+        $this->assertEquals(1, $rs);
+
+        $rs = \PhalApi\DI()->notorm->notormtest->where('id', 1)->updateMultiCounters(array('year' => -2));
+        $this->assertEquals(1, $rs);
+
+        $newData = \PhalApi\DI()->notorm->notormtest->where('id', 1)->fetchPairs('id', 'year');
+
+        $this->assertEquals($newData[1], $oldData[1]);
     }
 }
