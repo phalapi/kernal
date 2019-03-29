@@ -162,33 +162,33 @@ class PhpUnderControl_PhalApiModelNotORM_Test extends \PHPUnit_Framework_TestCas
     {
         // 原生插入
         $sql = "INSERT  INTO tbl_notormtest (`content`, `ext_data`) VALUES ('phpunit_e_sql_1', '" . '{\"year\":2019}' . "');";
-        $rs = \PhalApi\DI()->notorm->notormtest->excuteSql($sql);
+        $rs = \PhalApi\DI()->notorm->notormtest->executeSql($sql);
         $this->assertEquals(1, $rs);
 
         // 原生绑定参数插入
         $sql = "INSERT  INTO tbl_notormtest (`content`, `ext_data`) VALUES (:content, :ext_data);";
         $params = array(':content' => 'phpunit_e_sql_2', ':ext_data' => '{\"year\":2020}');
-        $rs = \PhalApi\DI()->notorm->notormtest->excuteSql($sql, $params);
+        $rs = \PhalApi\DI()->notorm->notormtest->executeSql($sql, $params);
         $this->assertEquals(1, $rs);
 
         // 原生更新
         $sql = "UPDATE tbl_notormtest SET `content` = 'phpunit_e_sql_3' WHERE (content = ? OR content = ?);";
         $params = array('phpunit_e_sql_1', 'phpunit_e_sql_2');
-        $rs = \PhalApi\DI()->notorm->notormtest->excuteSql($sql, $params);
+        $rs = \PhalApi\DI()->notorm->notormtest->executeSql($sql, $params);
         $this->assertEquals(2, $rs);
 
         // 如果是查询呢？只会返回影响的行数，而非结果
         $sql = "SELECT * FROM tbl_notormtest WHERE content IN ('phpunit_e_sql_3')";
-        $rs = \PhalApi\DI()->notorm->notormtest->excuteSql($sql, $params);
+        $rs = \PhalApi\DI()->notorm->notormtest->executeSql($sql, $params);
         $this->assertEquals(2, $rs);
 
         // 原生删除
         $sql = "DELETE FROM tbl_notormtest WHERE (content IN ('phpunit_e_sql_1', 'phpunit_e_sql_2'));";
-        $rs = \PhalApi\DI()->notorm->notormtest->excuteSql($sql);
+        $rs = \PhalApi\DI()->notorm->notormtest->executeSql($sql);
         $this->assertEquals(0, $rs);
 
         $sql = "DELETE FROM tbl_notormtest WHERE (content IN ('phpunit_e_sql_3'));";
-        $rs = \PhalApi\DI()->notorm->notormtest->excuteSql($sql);
+        $rs = \PhalApi\DI()->notorm->notormtest->executeSql($sql);
         $this->assertEquals(2, $rs);
     }
 
