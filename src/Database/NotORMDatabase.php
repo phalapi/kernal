@@ -282,24 +282,20 @@ class NotORMDatabase /** implements Database */ {
      */
     protected function createPDOBy($dbCfg) {
         // 默认mysql
+        $type = !empty($dbCfg['type']) ? strtolower($dbCfg['type']) : 'mysql';
         $dsn = sprintf('mysql:dbname=%s;host=%s;port=%d',
             $dbCfg['name'], 
             isset($dbCfg['host']) ? $dbCfg['host'] : 'localhost', 
             isset($dbCfg['port']) ? $dbCfg['port'] : 3306
         );
-        $charset = isset($dbCfg['charset']) ? $dbCfg['charset'] : 'UTF8';
-
-        // 支持sql server
-        if (!empty($dbCfg['type']) && strtolower($dbCfg['type']) == 'sqlserver') {
+        
+        if ($type == 'sqlserver' || $type == 'sqlsrv') {  // 支持sql server
             $dsn = sprintf('sqlsrv:Server=%s,%d;Database=%s',
                 isset($dbCfg['host']) ? $dbCfg['host'] : 'localhost', 
                 isset($dbCfg['port']) ? $dbCfg['port'] : 1433, 
                 $dbCfg['name']
             );
-        }
-
-        // 支持postgreSQL
-        if (!empty($dbCfg['type']) && strtolower($dbCfg['type']) == 'pgsql') {
+        } else if ($type == 'pgsql') {  // 支持postgreSQL
             $dsn = sprintf('pgsql:dbname=%s;host=%s;port=%d',
                 $dbCfg['name'],
                 isset($dbCfg['host']) ? $dbCfg['host'] : 'localhost',
@@ -307,11 +303,11 @@ class NotORMDatabase /** implements Database */ {
             );
         }
 
-        $pdo = new PDO(
-            $dsn,
-            $dbCfg['user'],
-            $dbCfg['password']
-        );
+        // 创建PDO连接
+        $pdo = new PDO($dsn, $dbCfg['user'], $dbCfg['password']);
+
+        // 设置编码
+        $charset = isset($dbCfg['charset']) ? $dbCfg['charset'] : 'UTF8';
         $pdo->exec("SET NAMES '{$charset}'");
 
         return $pdo;
