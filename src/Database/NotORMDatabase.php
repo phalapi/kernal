@@ -276,10 +276,12 @@ class NotORMDatabase /** implements Database */ {
 
     /**
      * 针对MySQL的PDO链接，如果需要采用其他数据库，可重载此函数
+     * @link https://www.php.net/manual/en/book.pdo.php
      * @param array $dbCfg 数据库配置
      * @return PDO
      */
     protected function createPDOBy($dbCfg) {
+        // 默认mysql
         $dsn = sprintf('mysql:dbname=%s;host=%s;port=%d',
             $dbCfg['name'], 
             isset($dbCfg['host']) ? $dbCfg['host'] : 'localhost', 
@@ -293,6 +295,15 @@ class NotORMDatabase /** implements Database */ {
                 isset($dbCfg['host']) ? $dbCfg['host'] : 'localhost', 
                 isset($dbCfg['port']) ? $dbCfg['port'] : 1433, 
                 $dbCfg['name']
+            );
+        }
+
+        // 支持postgreSQL
+        if (!empty($dbCfg['type']) && strtolower($dbCfg['type']) == 'pgsql') {
+            $dsn = sprintf('pgsql:dbname=%s;host=%s;port=%d',
+                $dbCfg['name'],
+                isset($dbCfg['host']) ? $dbCfg['host'] : 'localhost',
+                isset($dbCfg['port']) ? $dbCfg['port'] : 3306
             );
         }
 
