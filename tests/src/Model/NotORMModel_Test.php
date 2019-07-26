@@ -236,4 +236,10 @@ class PhpUnderControl_PhalApiModelNotORM_Test extends \PHPUnit_Framework_TestCas
 
         $this->assertGreaterThan(-1, $rs);
     }
+
+    public function testInStringArray()
+    {
+        $rs = \PhalApi\DI()->notorm->notormtest->where('content', array('phpunit_insert_1', 'phpunit_insert_2'))->fetchOne();
+        $this->assertNotEmpty($rs);
+    }
 }
