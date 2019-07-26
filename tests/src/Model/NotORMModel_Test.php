@@ -242,4 +242,11 @@ class PhpUnderControl_PhalApiModelNotORM_Test extends \PHPUnit_Framework_TestCas
         $rs = \PhalApi\DI()->notorm->notormtest->where('content', array('phpunit_insert_1', 'phpunit_insert_2'))->fetchOne();
         $this->assertNotEmpty($rs);
     }
+
+    public function testInIntArray()
+    {
+        $rs = \PhalApi\DI()->notorm->notormtest->where('id', array(1, 2, 3))->fetchOne();
+        $this->assertNotEmpty($rs);
+        $this->assertNotEmpty($rs);
+    }
 }
