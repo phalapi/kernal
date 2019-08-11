@@ -266,6 +266,13 @@ class PhpUnderControl_PhalApiDBNotORM_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $keys[1]);
     }
 
+    public function testPage()
+    {
+        $notorm = new NotORMDatabase(\PhalApi\DI()->config->get('dbs')/** , true **/);
+        $rs = $notorm->demo->order('id DESC')->page(1, 5)->fetchAll();
+        $this->assertNotEmpty($rs);
+    }
+
     public function testInsertMulti()
     {
         $rows = array(
