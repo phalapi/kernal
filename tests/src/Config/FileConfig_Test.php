@@ -60,4 +60,12 @@ class PhpUnderControl_PhalApiConfigFile_Test extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(is_array($rs));
     }
+
+    // 取不存在的配置时，不报错
+    public function testGetNotExists()
+    {
+        $rs = $this->fileConfig->get('xxx.yyy');
+        $this->assertTrue(true);
+        $this->assertSame(null, $rs);
+    }
 }

@@ -75,7 +75,8 @@ class FileConfig implements Config {
      * @return array 配置文件对应的内容
      */
 	private function loadConfig($fileName) {
-		$config = include($this->path . DIRECTORY_SEPARATOR . $fileName . '.php');
+        $configFile = $this->path . DIRECTORY_SEPARATOR . $fileName . '.php';
+		$config = file_exists($configFile) ? include($configFile) : array();
 		
 		$this->map[$fileName] = $config;
 	}
