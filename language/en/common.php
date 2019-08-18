@@ -24,4 +24,5 @@ return array(
     'redis config key [socket] not found' => 'redis config key [socket] not found',
 	'{name} can not match {regex}'  => '{name} can not match {regex}',
     'missing {name} extension' => 'missing {name} extension',
+    'Failed to log into file, because permission denied: {path}'      => 'Failed to log into file, because permission denied: {path}',
 );
