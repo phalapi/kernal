@@ -2,8 +2,8 @@
 namespace PhalApi\Logger;
 
 use PhalApi\Logger;
-use PhalApi\Exception\InternalServerErrorException;
 use PhalApi\Tool;
+use PhalApi\Exception\InternalServerErrorException;
 
 /**
  * FileLogger 文件日记纪录类
