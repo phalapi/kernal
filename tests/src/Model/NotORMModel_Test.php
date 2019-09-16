@@ -231,7 +231,8 @@ class PhpUnderControl_PhalApiModelNotORM_Test extends \PHPUnit_Framework_TestCas
             ->where('content', 'phpunit_insert_1')
             ->where('id', 1)
             ->where('id > ?', $id)
-            ->where('id IS NOT ?', NULL)
+            ->where('id IS NOT NULL')
+            //->where('id IS NOT ?', NULL)
             ->count('*');
 
         $this->assertGreaterThan(-1, $rs);
