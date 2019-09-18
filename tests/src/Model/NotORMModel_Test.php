@@ -238,6 +238,22 @@ class PhpUnderControl_PhalApiModelNotORM_Test extends \PHPUnit_Framework_TestCas
         $this->assertGreaterThan(-1, $rs);
     }
 
+    /**
+     * @expectedException PDOException
+     */
+    public function testWhereMixConstantAndVariableWrongAfterPDOString()
+    {
+        $id = 2;
+        $rs = \PhalApi\DI()->notorm->notormtest
+            ->where('content', 'phpunit_insert_1')
+            //->where('id', 1)
+            //->where('id > ?', $id)
+            ->where('id IS NOT ?', NULL)
+            ->count('*');
+
+        $this->assertGreaterThan(-1, $rs);
+    }
+
     public function testInStringArray()
     {
         $rs = \PhalApi\DI()->notorm->notormtest->where('content', array('phpunit_insert_1', 'phpunit_insert_2'))->fetchOne();
