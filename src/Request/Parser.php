@@ -106,7 +106,7 @@ class Parser {
             $onAfterParseList = explode('|', $onAfterParse);
             foreach ($onAfterParseList as $func) {
                 $func = trim($func);
-                if (empty($func)) {
+                if (empty($func) || !is_callable($func)) {
                     continue;
                 }
                 $value = call_user_func($func, $value);
