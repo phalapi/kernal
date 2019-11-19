@@ -314,8 +314,8 @@ class NotORMDatabase /** implements Database */ {
             \PDO::ATTR_TIMEOUT => 5,
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
         );
-	$driverOptions = isset($dbCfg['driver_options']) && is_array($dbCfg['driver_options']) ? $dbCfg['driver_options'] : array();
-        $driverOptions = array_merge($defaultOptions, $driverOptions);
+        $driverOptions = isset($dbCfg['driver_options']) && is_array($dbCfg['driver_options']) ? $dbCfg['driver_options'] : array();
+        $driverOptions = $driverOptions + $defaultOptions; // 注意：这里只能使用相加，不能使用array_merge()，因为下标是数值
 
         // 创建PDO连接
         $pdo = new \PDO($dsn, $dbCfg['user'], $dbCfg['password'], $driverOptions);
