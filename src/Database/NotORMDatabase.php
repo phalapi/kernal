@@ -319,7 +319,6 @@ class NotORMDatabase /** implements Database */ {
         if (empty($dbCfg['pdo_attr_string'])) {
             $pdo->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, false);
             $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         }
 
         // 设置编码
