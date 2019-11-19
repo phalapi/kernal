@@ -71,9 +71,9 @@ use PhalApi\NotORM\Lite as NotORMLite;
 
 class NotORMDatabase /** implements Database */ {
 
-	/**
-	 * @var NotORM $_notorms NotORM的实例池
-	 */
+    /**
+     * @var NotORM $_notorms NotORM的实例池
+     */
     protected $_notorms = array();
 
     /**
@@ -310,10 +310,15 @@ class NotORMDatabase /** implements Database */ {
         }
 
         // 具体驱动的连接选项
-        $driverOptions = isset($dbCfg['driver_options']) && is_array($dbCfg['driver_options']) ? $dbCfg['driver_options'] : array();
+        $defaultOptions = array(
+            \PDO::ATTR_TIMEOUT => 5,
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+        );
+	$driverOptions = isset($dbCfg['driver_options']) && is_array($dbCfg['driver_options']) ? $dbCfg['driver_options'] : array();
+        $driverOptions = array_merge($defaultOptions, $driverOptions);
 
         // 创建PDO连接
-        $pdo = new PDO($dsn, $dbCfg['user'], $dbCfg['password'], $driverOptions);
+        $pdo = new \PDO($dsn, $dbCfg['user'], $dbCfg['password'], $driverOptions);
 
         // 取消将数值转换为字符串
         if (empty($dbCfg['pdo_attr_string'])) {
