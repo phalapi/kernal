@@ -311,7 +311,7 @@ class NotORMDatabase /** implements Database */ {
 
         // 具体驱动的连接选项
         $defaultOptions = array(
-            \PDO::ATTR_TIMEOUT => 5,
+            \PDO::ATTR_TIMEOUT => 30,
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
         );
         $driverOptions = isset($dbCfg['driver_options']) && is_array($dbCfg['driver_options']) ? $dbCfg['driver_options'] : array();
