@@ -135,7 +135,7 @@ class Api {
             $rules = array_merge($allRules['*'], $rules);
         }
 
-        $apiCommonRules = DI()->config->get('app.apiCommonRules', array());
+        $apiCommonRules = $this->getApiCommonRules();
         if (!empty($apiCommonRules) && is_array($apiCommonRules)) {
             // fixed issue #22
             if ($this->isServiceWhitelist()) {
@@ -148,6 +148,17 @@ class Api {
         }
 
         return $rules;
+    }
+
+    /**
+     * 获取应用参数设置的规则
+     *
+     * 默认情况下读取app.apiCommonRules配置，可根据需要进行重载
+     * 
+     * @return array
+     */
+    protected function getApiCommonRules() {
+        return DI()->config->get('app.apiCommonRules', array());
     }
 
     /**
