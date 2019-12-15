@@ -147,6 +147,13 @@ class Api {
             $rules = array_merge($apiCommonRules, $rules);
         }
 
+        // 过滤置为空的参数规则 @dogstar 20191215
+        forech ($rules as $key => $rule) {
+            if ($rule === NULL || $rule === FALSE) {
+                unset($rules[$key]);
+            }
+        }
+
         return $rules;
     }
 
