@@ -35,8 +35,10 @@ use PhalApi\Exception\InternalServerErrorException;
  * @license     http://www.phalapi.net/license GPL 协议 GPL 协议
  * @link        http://www.phalapi.net/
  * @author      dogstar <chanzonghuang@gmail.com> 2014-10-02
+ *
+ * @exception 400 ret=400，表示客户端参数错误
+ * @exception 500 ret=500，表示服务端内部错误
  */
-
 class Api {
 
     /**
