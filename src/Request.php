@@ -220,7 +220,7 @@ class Request {
             // 支持自定义友好的错误提示信息，并支持i18n国际翻译
             $message = isset($rule['message'])
                 ? T($rule['message'])
-                : T('{name} require, but miss', array('name' => $rule['name']));
+                : T('{name} require, but miss', array('name' => $rule['name'], 'desc' => isset($rule['desc']) ? $rule['desc'] : ''));
             throw new BadRequestException($message);
         }
 
