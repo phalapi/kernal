@@ -110,6 +110,16 @@ class Request {
      * @return array
      */
     protected function genData($data) {
+        // 兼容接收JSON的参数 @dogstar 20191228
+        $postRaw = file_get_contents('php://input');
+        if (!empty($postRaw)) {
+            $postRawArr = json_decode($postRaw, TRUE);
+            if (!empty($postRawArr) && is_array($postRawArr)) {
+                $_REQUEST = array_merge($_REQUEST, $postRawArr);
+                $_POST = array_merge($_POST, $postRawArr);
+            }
+        }
+
         if (!isset($data) || !is_array($data)) {
             return $_REQUEST;
         }
