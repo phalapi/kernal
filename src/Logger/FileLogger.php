@@ -55,6 +55,7 @@ class FileLogger extends Logger {
         $this->dateFormat   = $dateFormat;
         $this->debug        = $debug !== NULL ? $debug : \PhalApi\DI()->debug;
         $this->isJsonUU     = version_compare(PHP_VERSION, '5.4.0' , '>=') ? TRUE : FALSE;
+        $this->separator    = $separator;
         $this->setFilePrefix($filePrefix);
 
         parent::__construct($level);
