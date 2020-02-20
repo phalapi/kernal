@@ -145,7 +145,7 @@ class FileLogger extends Logger {
                 : $data;
         }
 
-        $content = implode('|', $msgArr) . PHP_EOL;
+        $content = implode($this->separator, $msgArr) . PHP_EOL;
 
         if ($this->debug) {
             // 调试时，显示创建，更友好的提示
