@@ -39,7 +39,7 @@ class PhpUnderControl_PhalApiModelNotORM_Test extends \PHPUnit_Framework_TestCas
 
     protected function tearDown()
     {
-          var_dump(\PhalApi\DI()->tracer->getSqls());
+         // var_dump(\PhalApi\DI()->tracer->getSqls());
     }
 
 
