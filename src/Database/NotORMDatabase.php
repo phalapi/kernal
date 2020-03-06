@@ -327,10 +327,19 @@ class NotORMDatabase /** implements Database */ {
         }
 
         // 设置编码
-        $charset = isset($dbCfg['charset']) ? $dbCfg['charset'] : 'UTF8';
-        $pdo->exec("SET NAMES '{$charset}'");
+        $this->setDatabaseCharset($type, $dbCfg, $pdo);
 
         return $pdo;
+    }
+
+    protected function setDatabaseCharset($type, $dbCfg, $pdo) {
+        $charset = isset($dbCfg['charset']) ? $dbCfg['charset'] : 'UTF8';
+        if ($type == 'sqlserver' || $type == 'sqlsrv') {
+            // fixed: 'NAMES' is not a recognized SET option.
+            ini_set('mssql.charset', $charset);
+        } else {
+            $pdo->exec("SET NAMES '{$charset}'");
+        }
     }
 
     /**
