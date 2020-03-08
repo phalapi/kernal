@@ -56,6 +56,9 @@ class PhpUnderControl_PhalApiModelNotORM_Test extends \PHPUnit_Framework_TestCas
         $this->assertNotEmpty($rs);
 
         $this->assertEquals('welcome here', $rs['content']);
+
+        $rs = $this->phalApiModelNotORM->get(4040404);
+        $this->assertSame(FALSE, $rs);
     }
 
     /**
