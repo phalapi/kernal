@@ -241,12 +241,9 @@ class PhpUnderControl_PhalApiModelDataModel_Test extends \PHPUnit\Framework\Test
      */ 
     public function testDeleteAll()
     {
-        $where = 'id = ?';
-        $whereParams = array (
-            999
-);
+        $where = 'id = 999';
 
-        $rs = $this->phalApiModelDataModel->deleteAll($where, $whereParams);
+        $rs = $this->phalApiModelDataModel->deleteAll($where);
 
         $this->assertEquals(0, $rs);
     }
