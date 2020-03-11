@@ -212,6 +212,9 @@ class PhpUnderControl_PhalApiModelDataModel_Test extends \PHPUnit\Framework\Test
         $rs = $this->phalApiModelDataModel->getData($where, $select, $default);
 
         $this->assertNotEmpty($rs);
+
+        // 静态方法
+        $this->assertNotEmpty(DemoInnerDataModel::model()->getData($where, $select, $default));
     }
 
     /**
