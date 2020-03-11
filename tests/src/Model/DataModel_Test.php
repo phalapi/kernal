@@ -297,4 +297,16 @@ class PhpUnderControl_PhalApiModelDataModel_Test extends \PHPUnit\Framework\Test
         $this->assertEquals(2, $rs);
     }
 
+    public function testModel() {
+        $rs = DemoInnerDataModel::model();
+        $this->assertInstanceOf('\tests\PhalApi\Model\DemoInnerDataModel', $rs);
+        //var_dump($rs);
+    }
+
+    public function testNOtORM() {
+        $rs = DemoInnerDataModel::notorm();
+        // var_dump($rs);
+        $this->assertInstanceOf('\NotORM_Result', $rs);
+    }
+
 }

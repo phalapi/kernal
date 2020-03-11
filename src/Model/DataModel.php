@@ -16,6 +16,25 @@ use PhalApi\Exception\InternalServerErrorException;
  */
 class DataModel extends NotORMModel {
 
+    /** ---------------- 获取实例 ---------------- **/
+
+    /**
+     * 创建并获取当前Model实例
+     * @return \PhalApi\Model\DataModel 当前Model子类，继承于DataModel
+     */
+    public static function model() {
+        return new static();
+    }
+
+    /**
+     * 创建并获取当前Model对应的NotORM实例
+     * @return NotORM_Result NotORM实例
+     */
+    public static function notorm() {
+        $model = self::model();
+        return $model->getORM();
+    }
+
     /** ---------------- 更多数据库基本操作 ---------------- **/
 
     /** ---------------- 聚合操作 ---------------- **/
@@ -218,7 +237,7 @@ class DataModel extends NotORMModel {
     } 
 
     /**
-     * 
+     * 更新计数器
      * @param string|array $where 查询条件，例如：id = 1，或数组形式array('id' => 1)
      * @param array $updateData 累加或累减的更新数据，例如：array('字段名' => 1)，支持多组
      * @return int|boolean 返回更新的条数
