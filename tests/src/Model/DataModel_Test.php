@@ -67,6 +67,24 @@ class PhpUnderControl_PhalApiModelDataModel_Test extends \PHPUnit\Framework\Test
 
     }
 
+    public function testMinByWhere()
+    {
+        $rs = $this->phalApiModelDataModel->min('id > 1 AND id < 10', 'id');
+
+        $this->assertTrue(is_int($rs));
+        $this->assertGreaterThan(0, $rs);
+
+    }
+
+    public function testMaxByWhere()
+    {
+        $rs = $this->phalApiModelDataModel->max('id > 1 AND id < 10', 'id');
+
+        $this->assertTrue(is_int($rs));
+        $this->assertGreaterThan(0, $rs);
+
+    }
+
     /**
      * @group testSum
      */ 
@@ -310,6 +328,21 @@ class PhpUnderControl_PhalApiModelDataModel_Test extends \PHPUnit\Framework\Test
         $rs = DemoInnerDataModel::notorm();
         // var_dump($rs);
         $this->assertInstanceOf('\NotORM_Result', $rs);
+    }
+
+    public function testQueryAll() {
+        $sql = 'select * from tbl_demo where id < ?';
+        $rs = $this->phalApiModelDataModel->queryAll($sql, array(10));
+        // var_dump($rs);
+        $this->assertNotEmpty($rs);
+    }
+
+    public function testExecuteSql() {
+        $sql = 'update tbl_demo set age = age + 1 where id = :id';
+        $params = array(':id' => 776);
+        $rs = $this->phalApiModelDataModel->executeSql($sql, $params);
+        // var_dump($rs);
+        $this->assertEquals(0, $rs);
     }
 
 }
