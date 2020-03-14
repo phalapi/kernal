@@ -15,8 +15,24 @@ use PhalApi\Exception\InternalServerErrorException;
  */
 class DataApi extends Api {
 
+    /**
+     * 获取数据模型实例
+     * - 接口子类必须实现此方法，返回继承于PhalApi\Model\DataModel的Model数据模型子类
+     * @throws PhalApi\Exception\InternalServerErrorException
+     * @return PhalApi\Model\DataModel
+     */
     protected function getDataModel() {
         throw new InternalServerErrorException(__CLASS__ . \PhalApi\T('must implement getDataModel() to return your model instance'));
+    }
+
+    /**
+     * 用户身份验证
+     * - 为保护接口不受外部非法调用，接口子类必须明确重载此方法，进行用户身份验证
+     * - 如果确实不需要进行身份验证，重载后可进行空操作
+     * @throws PhalApi\Exception\BadRequestException 当验证失败时，请抛出此异常，以返回400
+     */
+    protected function userCheck() {
+        throw new InternalServerErrorException(__CLASS__ . \PhalApi\T('must implement userCheck() to protected your API'));
     }
 
     public function getRules() {

@@ -52,8 +52,5 @@ return array(
     'miss post data' => '缺少创建的数据',
     'system error, please contact engeneer' => '系统错误，请联系技术人员',
     'miss update data' => '缺少更新的数据',
-    '' => '',
-    '' => '',
-    '' => '',
-    '' => '',
+    'must implement userCheck() to protected your API' => '接口类必须实现userCheck()方法以便进行用户身份验证，避免接口被非法调用',
 );
