@@ -80,6 +80,7 @@ class DataApi extends Api {
 
         $total = $model->count($where);
         $items = $total > 0 ? $model->getList($where, $whereParams, $select, $order, $page, $perpage) : array();
+        $items = $this->afterTableList($items);
 
         return array('total' => $total, 'items' => $items);
     }
