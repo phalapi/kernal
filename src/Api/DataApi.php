@@ -121,7 +121,7 @@ class DataApi extends Api {
         }
         
         // 更多初始化的字段数据
-        $newData = $this->createDataMoreData($newData);
+        $newData = $this->beforeDataMoreData($newData);
         
         if (empty($newData)) {
             throw new BadRequestException(\PhalApi\T('miss post data'));
@@ -148,7 +148,7 @@ class DataApi extends Api {
     }
     
     // 创建时更多初始化的数据
-    protected function createDataMoreData($newData) {
+    protected function beforeDataMoreData($newData) {
         return $newData;
     }
     
@@ -211,6 +211,8 @@ class DataApi extends Api {
             throw new BadRequestException(\PhalApi\T('miss update data'));
         }
         
+        $updateData = $this->beforeUpdateData($updateData);
+
         try {
             $rows = $model->update($this->id, $updateData);
             return array('updated_num' => $rows);
@@ -229,6 +231,7 @@ class DataApi extends Api {
         return array();
     }
     
+    // 在更新数据前的处理
     protected function beforeUpdateData($updateData) {
         return $updateData;
     }
