@@ -119,4 +119,12 @@ class PhpUnderControl_PhalApiApiDataApi_Test extends \PHPUnit\Framework\TestCase
         $this->assertEquals(1, $rs['updated_num']);
     }
 
+    public function testDeleteData() {
+        $this->phalApiApiDataApi->id = 1000004;
+
+        $rs = $this->phalApiApiDataApi->deleteData();
+
+        $this->assertEquals(0, $rs['deleted_num']);
+    }
+
 }
