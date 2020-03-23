@@ -71,8 +71,12 @@ class DataApi extends Api {
                 $searchParams[$key] = $val;
             }
         }
+
+        // 条件
         $where = !empty($searchParams) ? $searchParams : NULL;
         $whereParams = array();
+        $where = $this->getTableListWhere($where);
+
         $select = $this->getTableListSelect();
         $order = $this->getTableListOrder();
         $page = $this->page;
@@ -93,6 +97,11 @@ class DataApi extends Api {
     // 列表的默认排序
     protected function getTableListOrder() {
         return 'id DESC';
+    }
+
+    // 查询条件
+    protected function getTableListWhere($where) {
+        return $where;
     }
     
     // 取到列表数据后的加工处理
