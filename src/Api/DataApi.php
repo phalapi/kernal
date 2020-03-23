@@ -198,8 +198,15 @@ class DataApi extends Api {
      * @return object|null 数据
      */
     public function getData() {
+        $where = array('id' => $this->id);
+        $whereParams = array();
+        $select = $this->getDataSelect();
+
+        // 前置条件加工
+        $where = $this->getGetDataWhere($where);
+
         $model = $this->getDataModel();
-        $data = $model->get($this->id, $this->getDataSelect());
+        $data = $model->getData($where, $whereParams, $select);
         
         $data = $this->afterGetData($data);
         
@@ -211,6 +218,11 @@ class DataApi extends Api {
         return '*';
     }
     
+    // 前置条件加工
+    protected function getGetDataWhere($where) {
+        return $where;
+    }
+
     // 取到数据后的加工处理
     protected function afterGetData($data) {
         return $data;
@@ -244,7 +256,10 @@ class DataApi extends Api {
         $updateData = $this->beforeUpdateData($updateData);
 
         try {
-            $rows = $model->update($this->id, $updateData);
+            $where = array('id' => $this->id);
+            $where = $this->getUpdateDataWhere($where);
+
+            $rows = $model->update($where, $updateData);
             return $this->returnDataResult(array('updated_num' => $rows));
         } catch (\PDOException $ex) {
             throw new BadRequestException(\PhalApi\DI()->debug ? $ex->getMessage() : \PhalApi\T('system error, please contact engeneer'));
@@ -259,6 +274,11 @@ class DataApi extends Api {
     // 更新时不允许更新的字段
     protected function updateDataExcludeKeys() {
         return array();
+    }
+
+    // 获取更新数据的条件
+    protected function getUpdateDataWhere($where) {
+        return $where;
     }
     
     // 在更新数据前的处理
