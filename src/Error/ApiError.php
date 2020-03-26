@@ -1,6 +1,8 @@
 <?php
 namespace PhalApi\Error;
 
+use PhalApi\Logger\FileLogger;
+
 /**
  * 接口错误类
  *
@@ -11,15 +13,28 @@ namespace PhalApi\Error;
  */
 class ApiError implements \PhalApi\Error {
 
+    protected $loggers = array();
+
     public function __construct() {
+        // 注册错误处理
         set_error_handler(array($this, 'handleError'));
+
+        // 注册致命错误时的处理
+        register_shutdown_function(array($this, 'handleFatalPHPError'));
+    }
+
+    /**
+     * 处理致命错误
+     */
+    public function handleFatalPHPError() {
+        $last_error = error_get_last();
+        if ($last_error) {
+            $this->handleError($last_error['type'], $last_error['message'], $last_error['file'], $last_error['line']);
+        }
     }
 
     /**
      * 自定义的错误处理函数
-     * - 错误转异常
-     * - 追加项目的回调处理
-     * 
      * @param int $errno 包含了错误的级别，是一个 integer
      * @param string $errstr 包含了错误的信息，是一个 string
      * @param string $errfile 可选的，包含了发生错误的文件名，是一个 string
@@ -34,7 +49,6 @@ class ApiError implements \PhalApi\Error {
         // }
 
         $error = 'Unknow';
-        $isstop = FALSE;
 
         switch ($errno) {
         case E_PARSE:
@@ -42,26 +56,24 @@ class ApiError implements \PhalApi\Error {
         case E_CORE_ERROR:
         case E_COMPILE_ERROR:
         case E_USER_ERROR:
-            $error = 'ERROR';
-            $isstop = TRUE;
+            $error = 'Error';
             break;
         case E_WARNING:
         case E_USER_WARNING:
         case E_COMPILE_WARNING:
         case E_RECOVERABLE_ERROR:
-            $error = 'WARNING';
+            $error = 'Warning';
             break;
         case E_NOTICE:
         case E_USER_NOTICE:
-            $error = 'NOTICE';
+            $error = 'Notice';
             break;
         case E_STRICT:
-            $error = 'STRICT';
-            $isstop = TRUE;
+            $error = 'Strict';
             break;
         case E_DEPRECATED:
         case E_USER_DEPRECATED:
-            $error = 'DEPRECATED';
+            $error = 'Deprecated';
             break;
         default:
             break;
@@ -73,16 +85,10 @@ class ApiError implements \PhalApi\Error {
             'errstr' => $errstr,
             'errfile' => $errfile,
             'errline' => $errline,
-            'isstop' => $isstop,
             'time' => time(),
         );
-        $context['message'] = \PhalApi\T('{error} ({errno}): {errstr} in [File: {errfile}, Line: {errline}, Time: {time}]', $context);
 
         $this->reportError($context);
-
-        if ($isstop) {
-            throw new \Exception($context['message']);
-        }
 
         return TRUE;
     }
@@ -92,12 +98,22 @@ class ApiError implements \PhalApi\Error {
      * @param array $context
      */
     protected function reportError($context) {
-        $logger = \PhalApi\DI()->logger;
-        if ($logger) {
-            $message = $context['message'];
-            unset($context['message']);
-            $logger->error($message, $context);
+        $message = \PhalApi\T('{error} ({errno}): {errstr} in [File: {errfile}, Line: {errline}, Time: {time}]', $context);
+        $this->getLogger($context['error'])->log($context['error'], $message, NULL);
+    }
+
+    /**
+     * 根据不同错误，获取相应的日志服务，区分日志文件名前缀
+     * @return \PhalApi\Logger\FileLogger
+     */
+    protected function getLogger($type) {
+        if (!isset($this->loggers[$type])) {
+            $config = \PhalApi\DI()->config->get('sys.file_logger');
+            $config['file_prefix'] = lcfirst($type);
+            $this->loggers[$type] = FileLogger::create($config);
         }
+
+        return $this->loggers[$type];
     }
 
 }
