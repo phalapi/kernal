@@ -294,7 +294,7 @@ class Request {
 
         // 尝试根据REQUEST_URI进行路由解析
         if ($service === NULL) {
-            $service = 'App.Site.Index';
+            $service = $this->getDefaultNamespace() . '.Site.Index';
             if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] !== '/' && \PhalApi\DI()->config->get('sys.enable_uri_match')) {
                 // 截取index.php和问号之间的路径
                 $uri        = $_SERVER['REQUEST_URI'];
@@ -308,10 +308,18 @@ class Request {
         }
 
         if (count(explode('.', $service)) == 2) {
-            $service = 'App.' . $service;
+            $service = $this->getDefaultNamespace() . '.' . $service;
         }
 
         return $service;
+    }
+
+    /**
+     * 获取默认的命名空间
+     * - 方便入口指定不同的模块
+     */
+    protected function getDefaultNamespace() {
+        return defined('API_NAMESPACE') ? API_NAMESPACE : 'App';
     }
 
     /**
