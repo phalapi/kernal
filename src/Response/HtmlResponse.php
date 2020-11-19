@@ -40,12 +40,10 @@ class HtmlResponse extends JsonResponse
         $action     = \PhalApi\DI()->request->getServiceAction();
         $this->name = $api . '/' . $action;
         if ($this->ret === 200) {
-            return $this->load($this->name, $result['data']);
-        } elseif ($this->ret > 200 && $this->ret <=206) {
-            return $this->load($api, $result['data']);
+            return $this->load($this->name, $result['data'], FALSE);
         }
 
-        return $this->load('error', $result);
+        return $this->load('error', $result, FALSE);
     }
 
     /**
@@ -93,27 +91,34 @@ class HtmlResponse extends JsonResponse
      * 装载模板
      * @param string $name html文件名称
      * @param array $param
-     * @return false|string
+     * @param bool $isOutput 是否直接输出模板内容
+     * @return false|string|null
      * @throws \Exception
      */
-    public function load($name, $param = array())
+    public function load($name, $param = array(), $isOutput = true)
     {
         $viewTplPath = $this->path($name);
+        $content = false;
         if (!file_exists($viewTplPath)) {
-            exit($viewTplPath . ' 模板文件不存在');
-        }
-        // 合并参数
-        $param = is_array($param) ? array_merge($this->param, $param) : $this->param;
-        // 将数组键名作为变量名，如果有冲突，则覆盖已有的变量
-        extract($param, EXTR_OVERWRITE);
-        unset($param);
+            $content = $viewTplPath . ' Not Found';
+        } else {
+	        // 合并参数
+	        $param = is_array($param) ? array_merge($this->param, $param) : $this->param;
+	        // 将数组键名作为变量名，如果有冲突，则覆盖已有的变量
+	        extract($param, EXTR_OVERWRITE);
+	        unset($param);
 
-        ob_start();
-        //ob_implicit_flush(false);
-        require($viewTplPath);
-        // 获取当前缓冲区内容
-        $content = ob_get_contents();
-        ob_end_clean();
+	        ob_start();
+	        require($viewTplPath);
+	        // 获取当前缓冲区内容
+	        $content = ob_get_contents();
+	        ob_end_clean();
+    	}
+
+    	if ($isOutput) {
+    		echo $content;
+    		return;
+    	}
 
         return $content;
     }
