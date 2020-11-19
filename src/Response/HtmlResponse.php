@@ -12,15 +12,14 @@ namespace PhalApi\Response;
  */
 class HtmlResponse extends JsonResponse
 {
-    protected $namespace;   // 命名空间
+    protected $namespace = 'app';   // 命名空间
     protected $themes;  // 模板主题
     protected $name = 'Site/index'; // 要调用的模板名
     protected $param = array();     // 模板参数[app数据、公共数据等]
     protected $ext;
 
 
-    public function __construct($namespace = 'app', $themes = 'Default', $ext = '.php') {
-        $this->namespace = $namespace;
+    public function __construct($themes = 'Default', $ext = '.php') {
         $this->themes = $themes;
         $this->ext = $ext;
 
@@ -141,9 +140,8 @@ class HtmlResponse extends JsonResponse
      * @param string $name
      * @return string
      */
-    private function path($name = '')
-    {
-        return API_ROOT . '/src/' . $this->namespace . '/View/' . $this->themes . '/' . $name . $this->ext;
+    private function path($name = '') {
+        return API_ROOT . '/src/' . lcfirst($this->namespace) . '/View/' . $this->themes . '/' . $name . $this->ext;
     }
 
     /**
