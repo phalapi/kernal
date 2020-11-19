@@ -7,14 +7,25 @@ namespace PhalApi\Response;
  * - 支持页面渲染返回输出
  *
  * \PhalApi\DI()->response = new \PhalApi\Response\HtmlResponse(); // 重新注册
+ * 
+ * @author 大卫 dogstar
  */
 class HtmlResponse extends JsonResponse
 {
-    protected $namespace = 'app';   // 命名空间
-    protected $themes = 'Default';  // 模板主题
+    protected $namespace;   // 命名空间
+    protected $themes;  // 模板主题
     protected $name = 'Site/index'; // 要调用的模板名
     protected $param = array();     // 模板参数[app数据、公共数据等]
-    private $format = 'json';       // 默认输出json，可选html
+    protected $ext;
+
+
+    public function __construct($namespace = 'app', $themes = 'Default', $ext = '.php') {
+        $this->namespace = $namespace;
+        $this->themes = $themes;
+        $this->ext = $ext;
+
+        $this->addHeaders('Content-Type', 'text/html;charset=utf-8');
+    }
 
     /**
      * 格式化需要输出返回的结果
@@ -24,51 +35,18 @@ class HtmlResponse extends JsonResponse
      */
     protected function formatResult($result)
     {
-        if ($this->format == 'json') {
-            return parent::formatResult($result);
-        } else {
-            $this->adjustHttpStatus();
-            $this->namespace = \PhalApi\DI()->request->getNamespace();
-            $api        = \PhalApi\DI()->request->getServiceApi();
-            $action     = \PhalApi\DI()->request->getServiceAction();
-            $this->name = $api . '/' . $action;
-            if ($this->ret === 200) {
-                return $this->load($this->name, $result['data']);
-            } elseif ($this->ret > 200 && $this->ret <=206) {
-                return $this->load($api, $result['data']);
-            } else {
-                return $this->load('error', $result);
-            }
+        $this->adjustHttpStatus();
+        $this->namespace = \PhalApi\DI()->request->getNamespace();
+        $api        = \PhalApi\DI()->request->getServiceApi();
+        $action     = \PhalApi\DI()->request->getServiceAction();
+        $this->name = $api . '/' . $action;
+        if ($this->ret === 200) {
+            return $this->load($this->name, $result['data']);
+        } elseif ($this->ret > 200 && $this->ret <=206) {
+            return $this->load($api, $result['data']);
         }
-    }
 
-    /**
-     * 设置输出格式
-     * @param string $format
-     */
-    public function setFormat($format = 'html')
-    {
-        switch ($format) {
-            case 'json':
-                $this->format = 'json';
-                $this->addHeaders('Content-Type', 'application/json;charset=utf-8');
-                break;
-            default:
-                $this->format = 'html';
-                $this->addHeaders('Content-Type', 'text/html;charset=utf-8');
-                break;
-        }
-    }
-
-    /**
-     * 输出结果
-     * @param $rs
-     */
-    protected function echoResult($rs)
-    {
-        if ($this->format == 'json') {
-            echo $rs;
-        }
+        return $this->load('error', $result);
     }
 
     /**
@@ -165,7 +143,7 @@ class HtmlResponse extends JsonResponse
      */
     private function path($name = '')
     {
-        return API_ROOT . '/src/' . strtolower($this->namespace) . '/View/' . $this->themes . '/' . strtolower($name) . '.php';
+        return API_ROOT . '/src/' . strtolower($this->namespace) . '/View/' . $this->themes . '/' . $name . $this->ext;
     }
 
     /**
@@ -177,20 +155,23 @@ class HtmlResponse extends JsonResponse
      */
     public function load($name, $param = array())
     {
-        $view = $this->path($name);
-        if (!file_exists($view)) {
-            exit($view . ' 模板文件不存在');
+        $viewTplPath = $this->path($name);
+        if (!file_exists($viewTplPath)) {
+            exit($viewTplPath . ' 模板文件不存在');
         }
         // 合并参数
         $param = is_array($param) ? array_merge($this->param, $param) : $this->param;
         // 将数组键名作为变量名，如果有冲突，则覆盖已有的变量
         extract($param, EXTR_OVERWRITE);
         unset($param);
+
         ob_start();
-        ob_implicit_flush(false);
-        require($view);
+        //ob_implicit_flush(false);
+        require($viewTplPath);
         // 获取当前缓冲区内容
         $content = ob_get_contents();
+        ob_end_clean();
+
         return $content;
     }
 }
