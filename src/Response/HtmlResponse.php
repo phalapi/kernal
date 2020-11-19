@@ -143,7 +143,7 @@ class HtmlResponse extends JsonResponse
      */
     private function path($name = '')
     {
-        return API_ROOT . '/src/' . strtolower($this->namespace) . '/View/' . $this->themes . '/' . $name . $this->ext;
+        return API_ROOT . '/src/' . $this->namespace . '/View/' . $this->themes . '/' . $name . $this->ext;
     }
 
     /**
