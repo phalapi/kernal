@@ -207,7 +207,8 @@ abstract class Response {
             505 => 'HTTP/1.1 505 HTTP Version not supported',  
         );
 
-        $str = isset($httpStatus[$this->ret]) ? $httpStatus[$this->ret] : "HTTP/1.1 {$this->ret} PhalApi Unknown Status";
+        $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
+        $str = isset($httpStatus[$this->ret]) ? $protocol .' '. $this->ret .' '. $httpStatus[$this->ret] : "HTTP/1.1 {$this->ret} Unknown Http Status Code";
         @header($str);
 
         return $this;
