@@ -137,7 +137,7 @@ class Request {
         }
 
         //对没有getallheaders函数做处理
-        $headers = array();
+        $headers = $_SERVER; // 支持更多头部
         foreach ($_SERVER as $name => $value) {
             if (is_array($value) || substr($name, 0, 5) != 'HTTP_') {
                 continue;
