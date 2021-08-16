@@ -145,6 +145,7 @@ class PhpUnderControl_PhalApiRequest_Test extends \PHPUnit_Framework_TestCase
     // 兼容多种拼写方式
     public function testGetHeaderMoreKindly()
     {
+        $_SERVER = array();
         $_SERVER['HTTP_USER_AGENT'] = 'PHPUnit';
 
         $request = new Request();
