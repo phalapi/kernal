@@ -17,6 +17,7 @@ use PhalApi\Exception;
 class ApiDesc extends ApiOnline {
 
     public function render($tplPath = NULL) {
+        $tplPath = !empty($tplPath) ? $tplPath : dirname(__FILE__) . '/api_desc_tpl.php';
         parent::render($tplPath);
 
         $service    = \PhalApi\DI()->request->getService();
@@ -41,7 +42,7 @@ class ApiDesc extends ApiOnline {
             $rules = $pai->getApiRules();
         } catch (Exception $ex){
             $service .= ' - ' . $ex->getMessage();
-            include dirname(__FILE__) . '/api_desc_tpl.php';
+            include $tplPath;
             return;
         }
 
@@ -122,7 +123,6 @@ class ApiDesc extends ApiOnline {
             $returns[$returnCommentArr[1]] = $returnCommentArr; 
         }
 
-        $tplPath = !empty($tplPath) ? $tplPath : dirname(__FILE__) . '/api_desc_tpl.php';
         include $tplPath;
     }
 }
