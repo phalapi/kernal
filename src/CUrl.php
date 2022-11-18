@@ -75,7 +75,7 @@ class CUrl {
      * @param int $timeoutMs 超时设置，单位：毫秒
      * @return string 接口返回的内容，超时返回false
      */
-    public function post($url, $data, $timeoutMs = 3000) {
+    public function post($url, $data = array(), $timeoutMs = 3000) {
         return $this->request($url, $data, 'POST', $timeoutMs);
     }
 
@@ -86,19 +86,18 @@ class CUrl {
      * @param int $timeoutMs 超时设置，单位：毫秒
      * @return string 接口返回的内容，超时返回false
      */
-    public function put($url, $data, $timeoutMs = 3000) {
+    public function put($url, $data = array(), $timeoutMs = 3000) {
         return $this->request($url, $data, 'PUT', $timeoutMs);
     }
 
     /**
      * DELETE方式的请求
      * @param string $url 请求的链接
-     * @param array $data DELETE的数据
      * @param int $timeoutMs 超时设置，单位：毫秒
      * @return string 接口返回的内容，超时返回false
      */
-    public function delete($url, $data, $timeoutMs = 3000) {
-        return $this->request($url, $data, 'DELETE', $timeoutMs);
+    public function delete($url, $timeoutMs = 3000) {
+        return $this->request($url, array(), 'DELETE', $timeoutMs);
     }
 
     /** ------------------ 前置方法 ------------------ **/
@@ -182,24 +181,25 @@ class CUrl {
             CURLOPT_HTTPHEADER          => $this->getHeaders(),
         );
 
-        if (!empty($data)) {
-            switch ($method) {
-                case 'POST' :
-                    $options[CURLOPT_POST]          = 1;
-                    $options[CURLOPT_POSTFIELDS]    = $data;
-                    break;
-                case 'PUT' :
-                    $options[CURLOPT_CUSTOMREQUEST] = 'PUT';
-                    $options[CURLOPT_POSTFIELDS]    = $data;
-                    break;
-                case 'DELETE' :
-                    $options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
-                    $options[CURLOPT_POSTFIELDS]    = $data;
-                    break;
-                default :
-            }
+        switch ($method) {
+            case 'GET' :
+                $options[CURLOPT_HTTPGET]       = 1;
+                break;
+            case 'POST' :
+                $options[CURLOPT_POST]          = 1;
+                $options[CURLOPT_POSTFIELDS]    = $data;
+                break;
+            case 'PUT' :
+                $options[CURLOPT_PUT]           = 1;
+                $options[CURLOPT_POSTFIELDS]    = $data;
+                break;
+            case 'DELETE' :
+                $options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
+                break;
+            default :
+                throw new \Exception($method . "未定义请求类型!");
         }
-        
+
         $options = $this->option + $options; //$this->>option优先
         
         $ch = curl_init();
