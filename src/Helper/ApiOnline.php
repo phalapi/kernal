@@ -31,6 +31,13 @@ class ApiOnline {
     }
 
     /**
+     * 获取模板变量
+     */
+    public function getTplData() {
+        return $this->tplData;
+    }
+
+    /**
      * @param string $tplPath 模板绝对路径
      */
     public function render($tplPath = NULL) {
@@ -38,6 +45,8 @@ class ApiOnline {
 
         extract($this->tplData);
 
-        include $tplPath;
+        if ($tplPath && file_exists($tplPath)) {
+            include $tplPath;
+        }
     }
 }
