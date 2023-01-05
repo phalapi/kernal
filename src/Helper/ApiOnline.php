@@ -41,11 +41,11 @@ class ApiOnline {
      * @param string $tplPath 模板绝对路径
      */
     public function render($tplPath = NULL) {
-        header('Content-Type:text/html;charset=utf-8');
-
-        extract($this->tplData);
-
         if ($tplPath && file_exists($tplPath)) {
+            header('Content-Type:text/html;charset=utf-8');
+
+            extract($this->tplData);
+
             include $tplPath;
         }
     }
