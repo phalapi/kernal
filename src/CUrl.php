@@ -159,10 +159,12 @@ class CUrl {
      * @param string $url 请求的链接
      * @param array $data POST的数据
      * @param int $timeoutMs 超时设置，单位：毫秒
-	 * @return string 接口返回的内容，超时返回false
+	 * @return string 接口返回的内容，超时返回false，异常取消抛出时返回NULL
      * @throws Exception
      */
     protected function request($url, $data, $timeoutMs = 3000) {
+        $rs = NULL;
+
         $options = array(
             CURLOPT_URL                 => $url,
             CURLOPT_RETURNTRANSFER      => TRUE,
