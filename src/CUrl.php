@@ -48,6 +48,8 @@ class CUrl {
     
     protected $cookie = array();
 
+    protected $isThrowExcption = true;
+
 	/**
 	 * @param int $retryTimes 超时重试次数，默认为1
 	 */
@@ -113,6 +115,16 @@ class CUrl {
         $this->option = $option + $this->option;
         return $this;
     }
+
+    /**
+     * 设置是否当错误时抛出异常
+     * @param boolean $isThrow true|false
+     * @return $this
+     */
+    public function setIsThrowException($isThrow) {
+        $this->isThrowExcption = $isThrow ? true : false;
+        return $this;
+    }
     
     /**
      * @param array $cookie
@@ -174,7 +186,7 @@ class CUrl {
             $curRetryTimes--;
         } while ($rs === FALSE && $curRetryTimes >= 0);
         $errno = curl_errno($ch);
-        if ($errno) {
+        if ($errno && $this->isThrowExcption) {
             throw new InternalServerErrorException(sprintf("%s::%s(%d)\n", $url, curl_error($ch), $errno));
         }
 
