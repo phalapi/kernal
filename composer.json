@@ -1,6 +1,6 @@
 {
   "name": "phalapi/kernal",
-  "description": "PhalApi 2.x 框架核心部分，v8.0.0 起支持 PHP 8。",
+  "description": "PhalApi 8.x 框架核心部分，v8.0.0 起支持 PHP 8。",
   "keywords": [
     "api", "phalapi", "framework"
   ],
