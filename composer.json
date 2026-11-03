@@ -21,7 +21,7 @@
   ],
   "require": {
     "php": ">=8.0",
-    "phalapi/notorm": "2.*.*"
+    "phalapi/notorm": "8.*.*"
   },
   "autoload": {
     "files": [
