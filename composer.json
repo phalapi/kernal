@@ -20,7 +20,7 @@
     }
   ],
   "require": {
-    "php": ">=5.3.3",
+    "php": ">=8.0",
     "phalapi/notorm": "2.*.*"
   },
   "autoload": {

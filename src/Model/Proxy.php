@@ -51,7 +51,7 @@ abstract class Proxy {
 	/**
 	 * 为代理指定委托的缓存组件，默认情况下使用DI()->cache
 	 */
-	public function __construct(Cache $cache = NULL) {
+	public function __construct(?Cache $cache = NULL) {
 		$this->cache = $cache !== NULL ? $cache : \PhalApi\DI()->cache;
 
 		//退而求其次
@@ -66,7 +66,7 @@ abstract class Proxy {
 	 * @param PhalApi_ModelQuery $query 查询对象
 	 * @return mixed 返回源数据，但在失败的情况下别返回NULL，否则依然会穿透到此
 	 */
-	public function getData(Query $query = NULL) {
+	public function getData(?Query $query = NULL) {
 		$rs = NULL;
 
 		if ($query === NULL) {

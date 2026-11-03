@@ -176,18 +176,22 @@ class DependenceInjection implements ArrayAccess {
 
     /** ------------------ ArrayAccess（数组式访问）接口 ------------------ **/
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value) {
         $this->set($offset, $value);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset) {
         return $this->get($offset, NULL);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset) {
         unset($this->data[$offset]);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset) {
         return isset($this->data[$offset]);
     }

@@ -5,9 +5,11 @@ use PhalApi\Crypt;
 use PhalApi\Exception\InternalServerErrorException;
 
 /**
- * McryptCrypt 原始mcrypt加密
- * 
- * 使用mcrypt扩展进加解密
+ * McryptCrypt 对称加密（OpenSSL 实现）
+ *
+ * 原实现依赖 mcrypt 扩展，而 mcrypt 自 PHP 7.2 起已从 PHP 移除，
+ * 因此在 PHP 8 下原实现必然抛出 "Call to undefined function mcrypt_*()"。
+ * 本类改用 OpenSSL 的 AES-256-CBC 重新实现，对外接口、类名与调用方式保持不变。
  *
  * <br>使用示例：<br>
 ```
@@ -23,8 +25,10 @@ use PhalApi\Exception\InternalServerErrorException;
  *  $decryptData = $mcrypt->decrypt($encryptData, $key);
 ```
  *
+ * - 补位方式沿用原实现：按块大小补 \0，解密后 rtrim("\0")，因此密文长度恒为 16 的整数倍
+ * - 与历史 mcrypt 密文<b>不兼容</b>：如需迁移旧数据，须先在 PHP 7.1 及以下用 mcrypt 解密，再在 PHP 8 下重新加密
+ *
  * @package     PhalApi\Crypt
- * @link        http://php.net/manual/zh/function.mcrypt-generic.php
  * @license     http://www.phalapi.net/license GPL 协议
  * @link        http://www.phalapi.net/
  * @author      dogstar <chanzonghuang@gmail.com> 2014-12-10
@@ -32,20 +36,25 @@ use PhalApi\Exception\InternalServerErrorException;
 
 class McryptCrypt implements Crypt {
 
-	/**
-	 * @var string $iv 加密向量， 最大长度不得超过McryptCrypt::MAX_IV_SIZE
-	 */
+    /**
+     * @var string $iv 加密向量，最大长度不得超过 McryptCrypt::MAX_IV_SIZE
+     */
     protected $iv;
 
     /**
-     * @var int 最大加密向量长度
+     * @var string 使用的加密算法，AES-256-CBC 的密钥长度固定 32 字节、块大小 16 字节
      */
-    const MAX_IV_SIZE = 8;
-    
+    const CIPHER = 'AES-256-CBC';
+
     /**
-     * @var int 最大加密key的长度
+     * @var int 最大加密向量长度（AES 块大小）
      */
-    const MAX_KEY_LENGTH = 56;
+    const MAX_IV_SIZE = 16;
+
+    /**
+     * @var int 最大加密key的长度（AES-256）
+     */
+    const MAX_KEY_LENGTH = 32;
 
     /**
      * @param string $iv 加密的向量 最大长度不得超过 MAX_IV_SIZE
@@ -69,11 +78,21 @@ class McryptCrypt implements Crypt {
             return $data;
         }
 
-        $cipher = $this->createCipher($key);
+        $this->checkOpenSSL();
 
-        $encrypted = mcrypt_generic($cipher, $data);
+        $encrypted = openssl_encrypt(
+            $this->padZero($data),
+            static::CIPHER,
+            $this->formatKey($key),
+            OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING,
+            $this->iv
+        );
 
-        $this->clearCipher($cipher);
+        if ($encrypted === FALSE) {
+            throw new InternalServerErrorException(
+                \PhalApi\T('openssl_encrypt with {cipher}', array('cipher' => static::CIPHER))
+            );
+        }
 
         return $encrypted;
     }
@@ -92,50 +111,58 @@ class McryptCrypt implements Crypt {
             return $data;
         }
 
-        $cipher = $this->createCipher($key);
+        $this->checkOpenSSL();
 
-        $decrypted = mdecrypt_generic($cipher, $data);
+        $decrypted = openssl_decrypt(
+            $data,
+            static::CIPHER,
+            $this->formatKey($key),
+            OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING,
+            $this->iv
+        );
 
-        $this->clearCipher($cipher);
+        if ($decrypted === FALSE) {
+            throw new InternalServerErrorException(
+                \PhalApi\T('openssl_decrypt with {cipher}', array('cipher' => static::CIPHER))
+            );
+        }
 
         return rtrim($decrypted, "\0");
     }
 
     /**
-     * 创建cipher
-     * @param string $key 私钥
-     * @return resource
-     * @throws PhalApi\Exception\InternalServerErrorException
+     * 按块大小补 \0，与 mcrypt_generic 的补位行为保持一致
+     * @param string $data
+     * @return string
      */
-    protected function createCipher($key) {
-        $cipher = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_CBC, '');
+    protected function padZero($data) {
+        $blockSize = static::MAX_IV_SIZE;
+        $remainder = strlen($data) % $blockSize;
 
-        if ($cipher === FALSE || $cipher < 0) {
-            throw new InternalServerErrorException(
-                \PhalApi\T('mcrypt_module_open with {cipher}', array('cipher' => $cipher))
-            );
-        }
-
-        mcrypt_generic_init($cipher, $this->formatKey($key), $this->iv);
-
-        return $cipher;
+        return $remainder === 0 ? $data : $data . str_repeat("\0", $blockSize - $remainder);
     }
 
     /**
-     * 格式化私钥
+     * 格式化私钥，不足补 \0，超长截断，确保恒为 32 字节
      * @param string $key 私钥
      */
     protected function formatKey($key) {
-        return strlen($key) > static::MAX_KEY_LENGTH ?  substr($key, 0, static::MAX_KEY_LENGTH) : $key;
+        $key = (string) $key;
+
+        return strlen($key) >= static::MAX_KEY_LENGTH
+            ? substr($key, 0, static::MAX_KEY_LENGTH)
+            : str_pad($key, static::MAX_KEY_LENGTH, "\0");
     }
 
     /**
-     * 释放cipher
-     * @param resource $cipher
+     * 检查运行环境是否支持 OpenSSL
+     * @throws InternalServerErrorException
      */
-    protected function clearCipher($cipher) {
-        mcrypt_generic_deinit($cipher);
-        mcrypt_module_close($cipher);
+    protected function checkOpenSSL() {
+        if (!function_exists('openssl_encrypt')) {
+            throw new InternalServerErrorException(
+                \PhalApi\T('openssl extension is required by {class}', array('class' => __CLASS__))
+            );
+        }
     }
 }
-

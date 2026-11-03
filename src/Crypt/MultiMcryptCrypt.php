@@ -52,7 +52,12 @@ class MultiMcryptCrypt implements Crypt {
             return FALSE;
         }
 
-        $decryptData = $this->mcrypt->decrypt($decryptData, $key);
+        // 底层 McryptCrypt 对畸形密文会抛异常，此处按本类约定降级为 FALSE（保持 PHP 7 时代行为）
+        try {
+            $decryptData = $this->mcrypt->decrypt($decryptData, $key);
+        } catch (\Exception $ex) {
+            return FALSE;
+        }
 
         $decryptData = @unserialize($decryptData);
         if ($decryptData === FALSE) {
