@@ -68,9 +68,7 @@ class ApiError implements \PhalApi\Error {
         case E_USER_NOTICE:
             $error = 'Notice';
             break;
-        case E_STRICT:
-            $error = 'Strict';
-            break;
+        // PHP 8.4 起 E_STRICT 常量已弃用，且 PHP 8 不再产生该级别错误，故不再单独分支
         case E_DEPRECATED:
         case E_USER_DEPRECATED:
             $error = 'Deprecated';
